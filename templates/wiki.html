@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Балістика Wiki</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      font-family: sans-serif;
+      background: #f0f0f0;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 80px auto;
+      background: white;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+
+    h1 {
+      margin-top: 0;
+      color: #2c3e50;
+    }
+
+    p {
+      font-size: 18px;
+      line-height: 1.6;
+      color: #333;
+    }
+
+    #back-button {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      z-index: 1000;
+      padding: 10px 20px;
+      border-radius: 30px;
+      border: none;
+      background: #4CAF50;
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+    }
+
+    #back-button:hover {
+      background-color: #43a047;
+    }
+  </style>
+</head>
+<body>
+  <button id="back-button" onclick="history.back()">← Назад</button>
+
+  <div class="container">
+    <h1>Балістика Wiki</h1>
+    <p>
+      У цьому розділі будуть представлені всі типи ракет, які використовуються для моделювання на нашій карті.
+      Тут ви зможете переглянути технічні характеристики, дальність, швидкість, вибухову силу та інші параметри для кожної моделі.
+    </p>
+    <p>
+      Дані будуть зʼявлятись поступово у процесі оновлення системи. Залишайтеся з нами!
+    </p>
+  </div>
+</body>
+</html>

@@ -74,10 +74,9 @@ def calculate_safety():
     data = request.json
     explosion_power = data['explosion_power']
 
-    # Радіуси небезпеки (змінюється залежно від вибухової сили)
-    red_radius = explosion_power * 5
-    yellow_radius = explosion_power * 10
-    green_radius = explosion_power * 15
+    red_radius = explosion_power * 0.2
+    yellow_radius = explosion_power * 0.5
+    green_radius = explosion_power * 0.9
 
     zones = [
         {"color": "red", "outer_radius": red_radius},
@@ -86,6 +85,21 @@ def calculate_safety():
     ]
 
     return jsonify({"zones": zones})
+@app.route('/calculator')
+def calculator():
+    return render_template('calculator.html')
+
+@app.route('/wiki')
+def wiki():
+    return render_template('wiki.html')
+
+@app.route('/instruction')
+def instruction():
+    return render_template('instruction.html')
+
+@app.route('/contacts')
+def contacts():
+    return render_template('contacts.html')
 
 # Ініціалізація бази даних при запуску додатка
 init_db()

@@ -1,0 +1,25 @@
+<!-- templates/base.html -->
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Funiania Ballistics</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <nav class="navbar">
+        <a href="{{ url_for('wiki') }}">Балістика Wiki</a>
+        <a href="{{ url_for('calculator') }}">Калькулятор</a>
+        <div class="logo">FUNIANIA BALLISTICS</div>
+        <a href="{{ url_for('instruction') }}">Інструкція</a>
+        <a href="{{ url_for('contacts') }}">Контакти</a>
+    </nav>
+
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+
+    <script src="{{ url_for('static', filename='js/map.js') }}"></script>
+</body>
+</html>

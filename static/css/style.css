@@ -1,0 +1,270 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background: #f0f0f0;
+}
+
+.navbar {
+    background: #415930;
+    color: white;
+    padding: 1rem;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    font-weight: bold;
+}
+
+.navbar a {
+    color: white;
+    text-decoration: none;
+    margin: 0 10px;
+}
+
+.navbar .logo {
+    background: #f2f7e7;
+    color: #415930;
+    padding: 5px 15px;
+    border-radius: 20px;
+}
+
+main {
+    background: white;
+    padding: 2rem;
+    max-width: 1200px;
+    margin: 20px auto;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+.home {
+    display: flex;
+    justify-content: space-between;
+    gap: 2rem;
+}
+
+.home-text {
+    flex: 1;
+}
+
+.home-image img {
+    max-width: 400px;
+    border-radius: 10px;
+}
+
+.page {
+    padding: 1rem;
+    line-height: 1.6;
+}
+
+.page ul, .page ol {
+    padding-left: 1.5rem;
+}
+
+.page a {
+    color: #2c5e2e;
+    text-decoration: none;
+}
+
+.page a:hover {
+    text-decoration: underline;
+}
+.instruction-page {
+    padding: 2rem;
+    background: linear-gradient(to bottom right, #e5f0e5, #f5faf5); /* ніжно-зелений фон */
+    border-radius: 10px;
+}
+
+.gradient-title {
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: #2d4f2d;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.intro-text {
+    font-size: 1.1rem;
+    margin-bottom: 2rem;
+    color: #333;
+}
+
+.steps {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+    justify-items: stretch;
+}
+
+
+.step-card {
+    background-color: #ffffffdd; /* трохи прозорий білий */
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    transition: transform 0.3s ease, background-color 0.3s ease;
+}
+
+.step-card:hover {
+    transform: translateY(-5px);
+    background-color: #f0f9f0;
+}
+
+.step-card h2 {
+    margin-top: 0;
+    color: #2b4b2b;
+}
+
+.step-card p {
+    color: #444;
+}
+
+.contacts-page {
+    padding: 2rem;
+    background: linear-gradient(to bottom right, #f3faf3, #eaf5ea);
+    border-radius: 10px;
+}
+
+.contact-cards {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.contact-card {
+    flex: 1 1 250px;
+    background-color: #ffffffdd;
+    padding: 1.5rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+    transition: transform 0.3s ease;
+}
+
+.contact-card:hover {
+    transform: translateY(-5px);
+    background-color: #f0f9f0;
+}
+
+.contact-card h2 {
+    margin-top: 0;
+    color: #2d4f2d;
+}
+
+.contact-card a {
+    text-decoration: none;
+    color: #2b6e2b;
+    font-weight: bold;
+}
+
+.contact-card a:hover {
+    text-decoration: underline;
+}
+
+.outro-text {
+    text-align: center;
+    font-size: 1.1rem;
+    color: #333;
+}
+
+.calculator-page {
+    padding: 2rem;
+    background: linear-gradient(to bottom right, #ecf4ec, #f6fdf6);
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+}
+
+.gradient-title {
+    font-size: 2.3rem;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 2rem;
+    background: linear-gradient(to right, #415930, #7ba96f);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.calc-section {
+    background-color: #ffffffee;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    transition: box-shadow 0.3s ease;
+}
+
+.calc-section:hover {
+    box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+}
+
+.calc-section h2 {
+    margin-top: 0;
+    color: #2c4e2c;
+}
+
+#map {
+    height: 500px;
+    width: 100%;
+    margin-top: 1rem;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+}
+
+select, button {
+    padding: 10px 16px;
+    font-size: 1rem;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    margin-right: 10px;
+}
+
+button {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #45a049;
+}
+
+button:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
+}
+
+#result {
+    padding: 1rem;
+    background-color: #f4f4f4;
+    border-radius: 10px;
+    border: 1px solid #ddd;
+    font-size: 1rem;
+    color: #333;
+    transition: all 0.3s ease;
+}
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+.fullscreen-map {
+    height: 100vh;
+    width: 100vw;
+    margin: 0;
+    border: none;
+    border-radius: 0;
+}
+.map-controls {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    z-index: 1000;
+    background: white;
+    padding: 10px;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+}
