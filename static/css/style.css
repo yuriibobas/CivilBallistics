@@ -268,3 +268,56 @@ html, body {
     border-radius: 8px;
     box-shadow: 0 2px 6px rgba(0,0,0,0.2);
 }
+
+/* === Wiki Page Beautiful Green-Themed === */
+.wiki-page {
+    background: linear-gradient(to bottom right, #f3faf3, #e9f2e9);
+    padding: 2rem 1rem;
+    min-height: 100vh;
+  }
+  
+  .wiki-page .container {
+    max-width: 850px;
+    margin: 80px auto;
+    background: #ffffff;
+    padding: 35px;
+    border-radius: 14px;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+    border: 1px solid #d8e8d8;
+  }
+  
+  .wiki-page h1 {
+    font-size: 2.4rem;
+    margin-bottom: 1.5rem;
+    color: #2c5e2c;
+    text-align: center;
+  }
+  
+  .wiki-page p {
+    font-size: 1.2rem;
+    line-height: 1.7;
+    color: #333;
+    margin-bottom: 1.3rem;
+    text-align: justify;
+  }
+  
+  #back-button {
+    position: absolute;
+    top: 25px;
+    left: 25px;
+    z-index: 1000;
+    padding: 12px 24px;
+    border-radius: 30px;
+    border: none;
+    background: #4CAF50;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    transition: background-color 0.3s ease;
+  }
+  
+  #back-button:hover {
+    background-color: #388e3c;
+  }
+  

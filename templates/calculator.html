@@ -54,7 +54,7 @@
     #back-button {
       position: absolute;
       top: 20px;
-      left: 20px;
+      left: 60px;
       z-index: 1000;
       padding: 10px 20px;
       border-radius: 30px;
@@ -94,10 +94,6 @@
     <label for="missile-select">Оберіть ракету:</label>
     <select id="missile-select">
       <option value="">-- Виберіть --</option>
-      <option value="scud">Scud</option>
-      <option value="iskander">Iskander</option>
-      <option value="kalibr">Kalibr</option>
-      <option value="kh-101">Kh-101</option>
     </select>
 
     <button onclick="calculate()">Розрахувати</button>
@@ -110,79 +106,127 @@
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       maxZoom: 19,
     }).addTo(map);
-
+  
     let marker = null;
     let redCircle = null;
     let yellowCircle = null;
-
-    const missileRanges = {
-      scud: 300,
-      iskander: 250,
-      kalibr: 1500,
-      "kh-101": 2000
-    };
-
+    let greenCircle = null;
+  
     map.on('click', function(e) {
       const { lat, lng } = e.latlng;
-
+  
       if (marker) {
         marker.setLatLng(e.latlng);
       } else {
         marker = L.marker(e.latlng).addTo(map);
       }
-
-      // Видаляємо старі кола
+  
       if (redCircle) map.removeLayer(redCircle);
       if (yellowCircle) map.removeLayer(yellowCircle);
+      if (greenCircle) map.removeLayer(greenCircle);
     });
-
+  
     function goBack() {
       history.back();
     }
-
-    function calculate() {
-      const missile = document.getElementById("missile-select").value;
-
-      if (!marker) {
-        alert("Будь ласка, виберіть точку на мапі.");
-        return;
-      }
-
-      if (!missile) {
-        alert("Будь ласка, виберіть ракету.");
-        return;
-      }
-
-      const { lat, lng } = marker.getLatLng();
-      const rangeKm = missileRanges[missile.toLowerCase()] || 1000;
-      const yellowRadius = rangeKm * 1000; // точний радіус
-
-      // Малюємо червоне та жовте коло
-      redCircle = L.circle([lat, lng], {
-        color: 'red',
-        fillColor: '#f03',
-        fillOpacity: 0.3,
-        radius: 1000 // 1 км епіцентр
-      }).addTo(map);
-
-      yellowCircle = L.circle([lat, lng], {
-        color: 'orange',
-        weight: 2,
-        fillColor: 'yellow',
-        fillOpacity: 0.1,
-        radius: yellowRadius
-      }).addTo(map);
-
-      // Показуємо info-блок
-      const infoBox = document.getElementById("info-box");
-      infoBox.style.display = 'block';
-      infoBox.innerHTML = `
-        <strong>Розрахунок:</strong><br>
-        Координати: ${lat.toFixed(5)}, ${lng.toFixed(5)}<br>
-        Ракета: ${missile}<br>
-        Дальність: ${rangeKm} км
-      `;
+  
+    function loadMissiles() {
+      fetch('/get_rockets')
+        .then(res => res.json())
+        .then(data => {
+          const select = document.getElementById("missile-select");
+          data.forEach(([id, name]) => {
+            const option = document.createElement("option");
+            option.value = id;
+            option.textContent = name;
+            select.appendChild(option);
+          });
+        });
     }
+  
+    function calculate() {
+  const missileId = document.getElementById("missile-select").value;
+
+  if (!marker) {
+    alert("Будь ласка, виберіть точку на мапі.");
+    return;
+  }
+
+  if (!missileId) {
+    alert("Будь ласка, оберіть ракету.");
+    return;
+  }
+
+  const { lat, lng } = marker.getLatLng();
+
+  fetch(`/get_rocket/${missileId}`)
+    .then(res => res.json())
+    .then(data => {
+      const rocketName = data[1];
+      const speed = data[2];
+      const explosionPower = data[3];
+      const range = data[4];
+
+      return fetch('/calculate_safety', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          lat: lat,
+          lon: lng,
+          explosion_power: explosionPower
+        })
+      }).then(res => res.json())
+        .then(response => {
+          const [red, yellow, green] = response.zones;
+
+          if (redCircle) map.removeLayer(redCircle);
+          if (yellowCircle) map.removeLayer(yellowCircle);
+          if (greenCircle) map.removeLayer(greenCircle);
+
+          const scaleFactor = 0.05; // ✅ підбирай: 0.1, 0.05, 0.03...
+
+          redCircle = L.circle([lat, lng], {
+            color: red.color,
+            fillColor: red.color,
+            fillOpacity: 0.3,
+            radius: red.outer_radius * scaleFactor
+          }).addTo(map);
+
+          yellowCircle = L.circle([lat, lng], {
+            color: yellow.color,
+            fillColor: yellow.color,
+            fillOpacity: 0.15,
+            radius: yellow.outer_radius * scaleFactor
+          }).addTo(map);
+
+          greenCircle = L.circle([lat, lng], {
+            color: green.color,
+            fillColor: green.color,
+            fillOpacity: 0.08,
+            radius: green.outer_radius * scaleFactor
+          }).addTo(map);
+
+          const infoBox = document.getElementById("info-box");
+          infoBox.style.display = 'block';
+          infoBox.innerHTML = `
+          <strong>Розрахунок:</strong><br>
+          Координати: ${lat.toFixed(5)}, ${lng.toFixed(5)}<br>
+          Ракета: ${rocketName}<br>
+          Швидкість: ${speed} м/с<br>
+          Вибухова сила: ${explosionPower}<br>
+          Дальність: ${range} м<br>
+          Радіус червоної зони: ${Math.round(red.outer_radius * scaleFactor)} м<br>
+          Радіус жовтої зони: ${Math.round(yellow.outer_radius * scaleFactor)} м<br>
+          Радіус зеленої зони: ${Math.round(green.outer_radius * scaleFactor)} м
+        `;
+        });
+    });
+}
+
+
+  
+    loadMissiles();
   </script>
+  
 </body>
 </html>

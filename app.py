@@ -74,9 +74,10 @@ def calculate_safety():
     data = request.json
     explosion_power = data['explosion_power']
 
-    red_radius = explosion_power * 0.2
-    yellow_radius = explosion_power * 0.5
-    green_radius = explosion_power * 0.9
+    # Радіуси небезпеки (змінюється залежно від вибухової сили)
+    red_radius = explosion_power * 5
+    yellow_radius = explosion_power * 10
+    green_radius = explosion_power * 15
 
     zones = [
         {"color": "red", "outer_radius": red_radius},
@@ -85,6 +86,7 @@ def calculate_safety():
     ]
 
     return jsonify({"zones": zones})
+
 @app.route('/calculator')
 def calculator():
     return render_template('calculator.html')
