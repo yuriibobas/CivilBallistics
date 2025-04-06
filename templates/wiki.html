@@ -1,14 +1,7 @@
-<!DOCTYPE html>
-<html lang="uk">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Балістика Wiki</title>
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-</head>
-<body class="wiki-page">
-  <button id="back-button" onclick="history.back()">← Назад</button>
+{% extends "base.html" %}
 
+{% block content %}
+<div class="wiki-page">
   <div class="container">
     <h1>Балістика Wiki</h1>
     <p>
@@ -19,5 +12,5 @@
       Дані будуть зʼявлятись поступово у процесі оновлення системи. Залишайтеся з нами!
     </p>
   </div>
-</body>
-</html>
+</div>
+{% endblock %}
