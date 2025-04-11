@@ -1,20 +1,25 @@
-<!-- templates/index.html -->
 {% extends "base.html" %}
 
 {% block content %}
-<div class="home">
-    <div class="home-text">
-        <h1>Funiania Ballistics</h1>
-        <p>- веб-застосунок, розроблений для громадян України задля забезпечення власної безпеки та близьких.</p>
+<div class="hero-section">
+    <div class="home">
+        <div class="home-text">
+            <h1 class="gradient-title">Funiania Ballistics</h1>
+            <p class="intro-text">
+                Інноваційний веб-застосунок для громадян України, створений для підвищення обізнаності та безпеки у часи загроз. Ми прагнемо зробити знання доступними, а реагування — оперативним.
+            </p>
 
-        <h2>Застосування</h2>
-        <ul>
-            <li><strong>Калькулятор</strong> — для врахування наслідків після прильоту балістики</li>
-            <li><strong>Балістичне Wiki</strong> — для ознайомлення та покращення знань у військовій сфері</li>
-        </ul>
-    </div>
-    <div class="home-image">
-        <img src="{{ url_for('static', filename='img/hero.png') }}" alt="військовий">
+            <div class="features">
+                <h2>Можливості</h2>
+                <ul>
+                    <li><strong>Калькулятор</strong> — моделює наслідки після вибухів та визначає зону потенційної небезпеки.</li>
+                    <li><strong>Балістичне Wiki</strong> — база знань про ракети, системи ППО, поради з укриття.</li>
+                </ul>
+            </div>
+        </div>
+        <div class="home-image">
+            <img src="{{ url_for('static', filename='img/hero.png') }}" alt="військовий" loading="lazy">
+        </div>
     </div>
 </div>
 {% endblock %}

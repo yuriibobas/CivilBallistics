@@ -321,3 +321,29 @@ html, body {
     background-color: #388e3c;
   }
   
+
+  .hero-section {
+    background: linear-gradient(to bottom right, #eef6ee, #f7fbf7);
+    padding: 3rem 2rem;
+    border-radius: 16px;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.05);
+}
+
+.home-text .features h2 {
+    font-size: 1.8rem;
+    color: #2d4f2d;
+    margin-top: 2rem;
+}
+
+.home-text .features ul {
+    padding-left: 1.5rem;
+    list-style-type: disc;
+}
+
+.home-text .features li {
+    font-size: 1.1rem;
+    margin-bottom: 0.8rem;
+    color: #333;
+    line-height: 1.6;
+    text-align: justify;
+}
