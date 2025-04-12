@@ -6,6 +6,8 @@
   <title>Калькулятор</title>
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="/static/js/map.js" defer></script>
   <style>
     html, body {
       margin: 0;
@@ -52,26 +54,6 @@
       background-color: #45a049;
     }
 
-    #home-button {
-      position: absolute;
-      top: 20px;
-      left: 60px;
-      z-index: 1000;
-      padding: 10px 20px;
-      border-radius: 30px;
-      border: none;
-      background: #4CAF50;
-      color: white;
-      font-size: 16px;
-      cursor: pointer;
-      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
-      text-decoration: none;
-    }
-
-    #home-button:hover {
-      background-color: #43a047;
-    }
-
     #info-box {
       position: absolute;
       bottom: 20px;
@@ -85,8 +67,7 @@
       box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
       display: none;
     }
-    
-    /* Додаємо стилі для навігаційного меню */
+
     .navbar {
       background: #415930;
       color: white;
@@ -115,22 +96,9 @@
       padding: 5px 15px;
       border-radius: 20px;
     }
-    
-    .data-source-toggle {
-      margin-top: 15px;
-      padding: 10px;
-      background-color: #f0f8f0;
-      border-radius: 8px;
-      font-size: 14px;
-    }
-    
-    .data-source-toggle label {
-      margin-right: 10px;
-    }
   </style>
 </head>
 <body>
-  <!-- Додаємо навігаційне меню -->
   <nav class="navbar">
     <a href="/wiki">Балістика Wiki</a>
     <a href="/calculator">Калькулятор</a>
@@ -142,189 +110,13 @@
   <div id="map"></div>
 
   <div class="control-panel">
-    <label for="data-source">Джерело даних:</label>
-    <div class="data-source-toggle">
-      <input type="radio" id="mongo-db" name="data-source" value="mongodb" checked>
-      <label for="mongo-db">MongoDB (повна база)</label>
-      <br>
-      <input type="radio" id="sqlite-db" name="data-source" value="sqlite">
-      <label for="sqlite-db">SQLite (тестова база)</label>
-    </div>
-    
     <label for="missile-select">Оберіть ракету:</label>
     <select id="missile-select">
       <option value="">-- Виберіть --</option>
     </select>
-
     <button onclick="calculate()">Розрахувати</button>
   </div>
 
   <div id="info-box"></div>
-
-  <script>
-    const map = L.map('map').setView([50.45, 30.52], 13);
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      maxZoom: 19,
-    }).addTo(map);
-  
-    let marker = null;
-    let redCircle = null;
-    let yellowCircle = null;
-    let greenCircle = null;
-    let currentDataSource = 'mongodb';
-  
-    map.on('click', function(e) {
-      const { lat, lng } = e.latlng;
-  
-      if (marker) {
-        marker.setLatLng(e.latlng);
-      } else {
-        marker = L.marker(e.latlng).addTo(map);
-      }
-  
-      if (redCircle) map.removeLayer(redCircle);
-      if (yellowCircle) map.removeLayer(yellowCircle);
-      if (greenCircle) map.removeLayer(greenCircle);
-    });
-    
-    // Зміна джерела даних
-    document.querySelectorAll('input[name="data-source"]').forEach(radio => {
-      radio.addEventListener('change', function() {
-        currentDataSource = this.value;
-        loadMissiles();
-      });
-    });
-  
-    function loadMissiles() {
-      const select = document.getElementById("missile-select");
-      select.innerHTML = '<option value="">-- Виберіть --</option>';
-      
-      if (currentDataSource === 'mongodb') {
-        fetch('/get_mongo_rockets')
-          .then(res => res.json())
-          .then(data => {
-            data.forEach(rocket => {
-              if (rocket.Назва) {
-                const option = document.createElement("option");
-                option.value = rocket._id;
-                option.textContent = rocket.Назва;
-                select.appendChild(option);
-              }
-            });
-          });
-      } else {
-        fetch('/get_rockets')
-          .then(res => res.json())
-          .then(data => {
-            data.forEach(([id, name]) => {
-              const option = document.createElement("option");
-              option.value = id;
-              option.textContent = name;
-              select.appendChild(option);
-            });
-          });
-      }
-    }
-  
-    function calculate() {
-      const missileId = document.getElementById("missile-select").value;
-
-      if (!marker) {
-        alert("Будь ласка, виберіть точку на мапі.");
-        return;
-      }
-
-      if (!missileId) {
-        alert("Будь ласка, оберіть ракету.");
-        return;
-      }
-
-      const { lat, lng } = marker.getLatLng();
-      
-      if (currentDataSource === 'mongodb') {
-        fetch(`/get_mongo_rocket/${missileId}`)
-          .then(res => res.json())
-          .then(data => {
-            const rocketName = data.Назва;
-            const speed = data.Швидкість || 0;
-            const explosionPower = data.Вибухова_сила || 0;
-            const range = data.Дальність || 0;
-            
-            calculateSafetyZones(lat, lng, rocketName, speed, explosionPower, range);
-          });
-      } else {
-        fetch(`/get_rocket/${missileId}`)
-          .then(res => res.json())
-          .then(data => {
-            const rocketName = data[1];
-            const speed = data[2];
-            const explosionPower = data[3];
-            const range = data[4];
-            
-            calculateSafetyZones(lat, lng, rocketName, speed, explosionPower, range);
-          });
-      }
-    }
-    
-    function calculateSafetyZones(lat, lng, rocketName, speed, explosionPower, range) {
-      return fetch('/calculate_safety', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          lat: lat,
-          lon: lng,
-          explosion_power: explosionPower
-        })
-      }).then(res => res.json())
-        .then(response => {
-          const [red, yellow, green] = response.zones;
-
-          if (redCircle) map.removeLayer(redCircle);
-          if (yellowCircle) map.removeLayer(yellowCircle);
-          if (greenCircle) map.removeLayer(greenCircle);
-
-          const scaleFactor = 0.05; // ✅ підбирай: 0.1, 0.05, 0.03...
-
-          redCircle = L.circle([lat, lng], {
-            color: red.color,
-            fillColor: red.color,
-            fillOpacity: 0.3,
-            radius: red.outer_radius * scaleFactor
-          }).addTo(map);
-
-          yellowCircle = L.circle([lat, lng], {
-            color: yellow.color,
-            fillColor: yellow.color,
-            fillOpacity: 0.15,
-            radius: yellow.outer_radius * scaleFactor
-          }).addTo(map);
-
-          greenCircle = L.circle([lat, lng], {
-            color: green.color,
-            fillColor: green.color,
-            fillOpacity: 0.08,
-            radius: green.outer_radius * scaleFactor
-          }).addTo(map);
-
-          const infoBox = document.getElementById("info-box");
-          infoBox.style.display = 'block';
-          infoBox.innerHTML = `
-          <strong>Розрахунок:</strong><br>
-          Координати: ${lat.toFixed(5)}, ${lng.toFixed(5)}<br>
-          Ракета: ${rocketName}<br>
-          Швидкість: ${speed} м/с<br>
-          Вибухова сила: ${explosionPower}<br>
-          Дальність: ${range} ${currentDataSource === 'mongodb' ? 'км' : 'м'}<br>
-          Радіус червоної зони: ${Math.round(red.outer_radius * scaleFactor)} м<br>
-          Радіус жовтої зони: ${Math.round(yellow.outer_radius * scaleFactor)} м<br>
-          Радіус зеленої зони: ${Math.round(green.outer_radius * scaleFactor)} м
-          `;
-        });
-    }
-  
-    // Завантаження ракет при старті сторінки
-    loadMissiles();
-  </script>
-  
 </body>
 </html>
