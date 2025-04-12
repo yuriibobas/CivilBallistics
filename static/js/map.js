@@ -1,7 +1,8 @@
 $(document).ready(function () {
     const map = L.map('map', {
-      zoomControl: false
-    }).setView([50.4501, 30.5234], 7);
+        zoomControl: false,
+        maxZoom: 20
+      }).setView([50.4501, 30.5234], 7);
     L.control.zoom({
       position: 'bottomleft'
     }).addTo(map);
@@ -107,6 +108,9 @@ $(document).ready(function () {
                 fillOpacity: 0.1,
                 radius: green.outer_radius * scaleFactor
               }).addTo(map));
+  
+
+              map.setView([lat, lng], 13);
   
               const infoBox = document.getElementById("info-box");
               infoBox.style.display = 'block';
