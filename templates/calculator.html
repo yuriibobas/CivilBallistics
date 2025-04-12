@@ -28,6 +28,7 @@
       border-radius: 10px;
       z-index: 1000;
       box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+      width: 250px;
     }
 
     .control-panel select,
@@ -114,6 +115,18 @@
       padding: 5px 15px;
       border-radius: 20px;
     }
+    
+    .data-source-toggle {
+      margin-top: 15px;
+      padding: 10px;
+      background-color: #f0f8f0;
+      border-radius: 8px;
+      font-size: 14px;
+    }
+    
+    .data-source-toggle label {
+      margin-right: 10px;
+    }
   </style>
 </head>
 <body>
@@ -128,9 +141,16 @@
   
   <div id="map"></div>
 
-  <!-- <a id="home-button" href="/">← На головну</a> -->
-
   <div class="control-panel">
+    <label for="data-source">Джерело даних:</label>
+    <div class="data-source-toggle">
+      <input type="radio" id="mongo-db" name="data-source" value="mongodb" checked>
+      <label for="mongo-db">MongoDB (повна база)</label>
+      <br>
+      <input type="radio" id="sqlite-db" name="data-source" value="sqlite">
+      <label for="sqlite-db">SQLite (тестова база)</label>
+    </div>
+    
     <label for="missile-select">Оберіть ракету:</label>
     <select id="missile-select">
       <option value="">-- Виберіть --</option>
@@ -151,6 +171,7 @@
     let redCircle = null;
     let yellowCircle = null;
     let greenCircle = null;
+    let currentDataSource = 'mongodb';
   
     map.on('click', function(e) {
       const { lat, lng } = e.latlng;
@@ -165,19 +186,44 @@
       if (yellowCircle) map.removeLayer(yellowCircle);
       if (greenCircle) map.removeLayer(greenCircle);
     });
+    
+    // Зміна джерела даних
+    document.querySelectorAll('input[name="data-source"]').forEach(radio => {
+      radio.addEventListener('change', function() {
+        currentDataSource = this.value;
+        loadMissiles();
+      });
+    });
   
     function loadMissiles() {
-      fetch('/get_rockets')
-        .then(res => res.json())
-        .then(data => {
-          const select = document.getElementById("missile-select");
-          data.forEach(([id, name]) => {
-            const option = document.createElement("option");
-            option.value = id;
-            option.textContent = name;
-            select.appendChild(option);
+      const select = document.getElementById("missile-select");
+      select.innerHTML = '<option value="">-- Виберіть --</option>';
+      
+      if (currentDataSource === 'mongodb') {
+        fetch('/get_mongo_rockets')
+          .then(res => res.json())
+          .then(data => {
+            data.forEach(rocket => {
+              if (rocket.Назва) {
+                const option = document.createElement("option");
+                option.value = rocket._id;
+                option.textContent = rocket.Назва;
+                select.appendChild(option);
+              }
+            });
           });
-        });
+      } else {
+        fetch('/get_rockets')
+          .then(res => res.json())
+          .then(data => {
+            data.forEach(([id, name]) => {
+              const option = document.createElement("option");
+              option.value = id;
+              option.textContent = name;
+              select.appendChild(option);
+            });
+          });
+      }
     }
   
     function calculate() {
@@ -194,71 +240,89 @@
       }
 
       const { lat, lng } = marker.getLatLng();
+      
+      if (currentDataSource === 'mongodb') {
+        fetch(`/get_mongo_rocket/${missileId}`)
+          .then(res => res.json())
+          .then(data => {
+            const rocketName = data.Назва;
+            const speed = data.Швидкість || 0;
+            const explosionPower = data.Вибухова_сила || 0;
+            const range = data.Дальність || 0;
+            
+            calculateSafetyZones(lat, lng, rocketName, speed, explosionPower, range);
+          });
+      } else {
+        fetch(`/get_rocket/${missileId}`)
+          .then(res => res.json())
+          .then(data => {
+            const rocketName = data[1];
+            const speed = data[2];
+            const explosionPower = data[3];
+            const range = data[4];
+            
+            calculateSafetyZones(lat, lng, rocketName, speed, explosionPower, range);
+          });
+      }
+    }
+    
+    function calculateSafetyZones(lat, lng, rocketName, speed, explosionPower, range) {
+      return fetch('/calculate_safety', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          lat: lat,
+          lon: lng,
+          explosion_power: explosionPower
+        })
+      }).then(res => res.json())
+        .then(response => {
+          const [red, yellow, green] = response.zones;
 
-      fetch(`/get_rocket/${missileId}`)
-        .then(res => res.json())
-        .then(data => {
-          const rocketName = data[1];
-          const speed = data[2];
-          const explosionPower = data[3];
-          const range = data[4];
+          if (redCircle) map.removeLayer(redCircle);
+          if (yellowCircle) map.removeLayer(yellowCircle);
+          if (greenCircle) map.removeLayer(greenCircle);
 
-          return fetch('/calculate_safety', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              lat: lat,
-              lon: lng,
-              explosion_power: explosionPower
-            })
-          }).then(res => res.json())
-            .then(response => {
-              const [red, yellow, green] = response.zones;
+          const scaleFactor = 0.05; // ✅ підбирай: 0.1, 0.05, 0.03...
 
-              if (redCircle) map.removeLayer(redCircle);
-              if (yellowCircle) map.removeLayer(yellowCircle);
-              if (greenCircle) map.removeLayer(greenCircle);
+          redCircle = L.circle([lat, lng], {
+            color: red.color,
+            fillColor: red.color,
+            fillOpacity: 0.3,
+            radius: red.outer_radius * scaleFactor
+          }).addTo(map);
 
-              const scaleFactor = 0.05; // ✅ підбирай: 0.1, 0.05, 0.03...
+          yellowCircle = L.circle([lat, lng], {
+            color: yellow.color,
+            fillColor: yellow.color,
+            fillOpacity: 0.15,
+            radius: yellow.outer_radius * scaleFactor
+          }).addTo(map);
 
-              redCircle = L.circle([lat, lng], {
-                color: red.color,
-                fillColor: red.color,
-                fillOpacity: 0.3,
-                radius: red.outer_radius * scaleFactor
-              }).addTo(map);
+          greenCircle = L.circle([lat, lng], {
+            color: green.color,
+            fillColor: green.color,
+            fillOpacity: 0.08,
+            radius: green.outer_radius * scaleFactor
+          }).addTo(map);
 
-              yellowCircle = L.circle([lat, lng], {
-                color: yellow.color,
-                fillColor: yellow.color,
-                fillOpacity: 0.15,
-                radius: yellow.outer_radius * scaleFactor
-              }).addTo(map);
-
-              greenCircle = L.circle([lat, lng], {
-                color: green.color,
-                fillColor: green.color,
-                fillOpacity: 0.08,
-                radius: green.outer_radius * scaleFactor
-              }).addTo(map);
-
-              const infoBox = document.getElementById("info-box");
-              infoBox.style.display = 'block';
-              infoBox.innerHTML = `
-              <strong>Розрахунок:</strong><br>
-              Координати: ${lat.toFixed(5)}, ${lng.toFixed(5)}<br>
-              Ракета: ${rocketName}<br>
-              Швидкість: ${speed} м/с<br>
-              Вибухова сила: ${explosionPower}<br>
-              Дальність: ${range} м<br>
-              Радіус червоної зони: ${Math.round(red.outer_radius * scaleFactor)} м<br>
-              Радіус жовтої зони: ${Math.round(yellow.outer_radius * scaleFactor)} м<br>
-              Радіус зеленої зони: ${Math.round(green.outer_radius * scaleFactor)} м
-            `;
-            });
+          const infoBox = document.getElementById("info-box");
+          infoBox.style.display = 'block';
+          infoBox.innerHTML = `
+          <strong>Розрахунок:</strong><br>
+          Координати: ${lat.toFixed(5)}, ${lng.toFixed(5)}<br>
+          Ракета: ${rocketName}<br>
+          Швидкість: ${speed} м/с<br>
+          Вибухова сила: ${explosionPower}<br>
+          Дальність: ${range} ${currentDataSource === 'mongodb' ? 'км' : 'м'}<br>
+          Радіус червоної зони: ${Math.round(red.outer_radius * scaleFactor)} м<br>
+          Радіус жовтої зони: ${Math.round(yellow.outer_radius * scaleFactor)} м<br>
+          Радіус зеленої зони: ${Math.round(green.outer_radius * scaleFactor)} м
+          `;
         });
     }
   
+    // Завантаження ракет при старті сторінки
     loadMissiles();
   </script>
   

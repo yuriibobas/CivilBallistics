@@ -1,12 +1,20 @@
 from flask import Flask, render_template, request, jsonify
 import sqlite3
 import os
+from pymongo.mongo_client import MongoClient
+from pymongo.server_api import ServerApi
 
 app = Flask(__name__)
 
 # Визначення абсолютного шляху до бази даних
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 DATABASE_PATH = os.path.join(BASE_DIR, 'rockets.db')
+
+# Підключення до MongoDB
+uri = "mongodb+srv://hayevska:2hyrfNt7jQVd3hf@cluster0.qjtidh4.mongodb.net/?appName=Cluster0"
+mongo_client = MongoClient(uri, server_api=ServerApi('1'))
+mongo_db = mongo_client["Funiania_Ballistics"]
+rockets_collection = mongo_db["Rockets"]
 
 # Функція для отримання даних із БД
 def query_db(query, args=(), one=False):
@@ -53,13 +61,40 @@ def init_db():
         except sqlite3.Error as e:
             print(f"Помилка при ініціалізації бази даних: {e}")
 
-# Отримання списку ракет
+# Отримання списку ракет з MongoDB
+@app.route('/get_mongo_rockets')
+def get_mongo_rockets():
+    try:
+        rockets = list(rockets_collection.find({}, {"Назва": 1, "Швидкість": 1, "Вибухова_сила": 1, "Дальність": 1}))
+        # Перетворюємо ObjectId на рядок для серіалізації JSON
+        for rocket in rockets:
+            rocket["_id"] = str(rocket["_id"])
+        return jsonify(rockets)
+    except Exception as e:
+        print(f"Помилка при отриманні даних з MongoDB: {e}")
+        return jsonify([])
+
+# Отримання характеристик конкретної ракети з MongoDB за ID
+@app.route('/get_mongo_rocket/<rocket_id>')
+def get_mongo_rocket(rocket_id):
+    try:
+        from bson.objectid import ObjectId
+        rocket = rockets_collection.find_one({"_id": ObjectId(rocket_id)})
+        if rocket:
+            rocket["_id"] = str(rocket["_id"])
+            return jsonify(rocket)
+        return jsonify({"error": "Ракету не знайдено"})
+    except Exception as e:
+        print(f"Помилка при отриманні даних з MongoDB: {e}")
+        return jsonify({"error": str(e)})
+
+# Отримання списку ракет зі SQLite
 @app.route('/get_rockets')
 def get_rockets():
     rockets = query_db('SELECT id, name FROM rockets')
     return jsonify(rockets)
 
-# Отримання характеристик конкретної ракети
+# Отримання характеристик конкретної ракети зі SQLite
 @app.route('/get_rocket/<int:rocket_id>')
 def get_rocket(rocket_id):
     rocket = query_db('SELECT * FROM rockets WHERE id = ?', (rocket_id,), one=True)
@@ -93,7 +128,9 @@ def calculator():
 
 @app.route('/wiki')
 def wiki():
-    return render_template('wiki.html')
+    # Отримання всіх ракет з MongoDB колекції
+    rockets = list(rockets_collection.find())
+    return render_template('wiki.html', rockets=rockets)
 
 @app.route('/instruction')
 def instruction():

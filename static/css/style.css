@@ -347,3 +347,99 @@ html, body {
     line-height: 1.6;
     text-align: justify;
 }
+
+
+.wiki-page .container {
+    max-width: 950px;
+    margin: 80px auto;
+    background: #ffffff;
+    padding: 35px;
+    border-radius: 14px;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+    border: 1px solid #d8e8d8;
+  }
+  
+  .rockets-list {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    margin-top: 2rem;
+  }
+  
+  .rocket-card {
+    background-color: #f9f9f9;
+    border-radius: 10px;
+    padding: 1.5rem;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  .rocket-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+  }
+  
+  .rocket-card h2 {
+    color: #3e5f3e;
+    margin-top: 0;
+    border-bottom: 2px solid #e0e0e0;
+    padding-bottom: 10px;
+  }
+  
+  .rocket-details {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+  }
+  
+  .rocket-specs {
+    background-color: #f0f8f0;
+    padding: 1rem;
+    border-radius: 8px;
+  }
+  
+  .rocket-specs p {
+    margin: 0.5rem 0;
+  }
+  
+  .rocket-description {
+    grid-column: span 2;
+    margin-top: 1rem;
+    font-style: italic;
+    color: #555;
+    line-height: 1.6;
+  }
+  
+  .additional-info {
+    grid-column: span 2;
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px dashed #ccc;
+  }
+  
+  .intro-text {
+    font-size: 1.1rem;
+    margin-bottom: 2rem;
+    color: #444;
+    text-align: justify;
+  }
+  
+  .no-data {
+    background-color: #f0f8f0;
+    padding: 2rem;
+    border-radius: 10px;
+    text-align: center;
+    color: #555;
+    margin-top: 2rem;
+  }
+  
+  @media (max-width: 768px) {
+    .rocket-details {
+      grid-template-columns: 1fr;
+    }
+    
+    .rocket-description, 
+    .additional-info {
+      grid-column: span 1;
+    }
+  }
