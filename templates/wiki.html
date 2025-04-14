@@ -11,50 +11,75 @@
       
       <div class="rockets-list">
         {% for rocket in rockets %}
-          <div class="rocket-card">
-            <h2 class="rocket-title" onclick="toggleRocketInfo('rocket-{{ loop.index }}')">
+          <div class="rocket-card" id="rocket-{{ rocket.get('Назва', 'unknown').replace(' ', '-').lower() }}">
+            <h2 class="rocket-title" onclick="toggleRocketInfo('rocket-details-{{ loop.index }}')">
+              {% if rocket.get('Фото') %}
+                <img src="{{ rocket.get('Фото') }}" alt="{{ rocket.get('Назва', 'Ракета') }}" class="rocket-thumbnail">
+              {% endif %}
               {{ rocket.get('Назва', 'Невідома ракета') }}
               <span class="toggle-icon">▼</span>
             </h2>
 
-            <div id="rocket-{{ loop.index }}" class="rocket-details" style="display: none;">
-              <div class="rocket-text">
-                <div class="rocket-specs">
-                  {% if rocket.get('Країна-виробник') %}
-                    <p><strong>Країна:</strong> {{ rocket.get('Країна-виробник') }}</p>
+            <div id="rocket-details-{{ loop.index }}" class="rocket-details" style="display: none;">
+              <div class="rocket-content">
+                <div class="rocket-main-info">
+                  {% if rocket.get('Опис') %}
+                    <div class="rocket-description">
+                      <p>{{ rocket.get('Опис') }}</p>
+                    </div>
                   {% endif %}
-                  {% if rocket.get('Швидкість') %}
-                    <p><strong>Швидкість:</strong> {{ rocket.get('Швидкість') }} м/с</p>
-                  {% endif %}
-                  {% if rocket.get('Вибухова_сила') %}
-                    <p><strong>Вибухова сила:</strong> {{ rocket.get('Вибухова_сила') }}</p>
-                  {% endif %}
-                  {% if rocket.get('Дальність') %}
-                    <p><strong>Дальність:</strong> {{ rocket.get('Дальність') }} км</p>
-                  {% endif %}
-                </div>
 
-                {% if rocket.get('Опис') %}
-                  <div class="rocket-description">
-                    <p>{{ rocket.get('Опис') }}</p>
-                  </div>
-                {% endif %}
-
-                <div class="additional-info">
+                  <!-- Всі інші пункти, крім специфікованих для таблиці -->
                   {% for key, value in rocket.items() %}
-                    {% if key not in ['_id', 'Назва', 'Країна-виробник', 'Швидкість', 'Вибухова_сила', 'Дальність', 'Опис', 'Фото'] and value %}
-                      <p><strong>{{ key }}:</strong> {{ value }}</p>
+                    {% if key not in ['_id', 'Назва', 'Фото', 'Швидкість м/с', 'Вибухова сила кт', 'Тип', 'Походження', 'На озброєнні (з - до)', 'Оператори', 'Війни', 'Розроблено', 'Виробник', 'Паливо', 'Операційна дальність', 'Точність'] and value %}
+                      <div class="info-section">
+                        <h3>{{ key }}</h3>
+                        <p>{{ value }}</p>
+                      </div>
                     {% endif %}
                   {% endfor %}
                 </div>
-              </div>
-
-              <div class="rocket-image">
-                {% if rocket.get('Фото') %}
-                  <img src="{{ rocket.get('Фото') }}" alt="{{ rocket.get('Назва', 'Ракета') }}" class="rocket-img">
-                {% else %}
-                  <div class="image-placeholder">Зображення відсутнє</div>
-                {% endif %}
+                
+                <div class="rocket-sidebar">
+                  <div class="rocket-image-container">
+                    {% if rocket.get('Фото') %}
+                      <img src="{{ rocket.get('Фото') }}" alt="{{ rocket.get('Назва', 'Ракета') }}" class="rocket-img">
+                    {% else %}
+                      <div class="image-placeholder">Зображення відсутнє</div>
+                    {% endif %}
+                  </div>
+                  
+                  <div class="rocket-specs-box">
+                    <div class="rocket-specs-title">{{ rocket.get('Назва', 'Невідома ракета') }}</div>
+                    
+                    <div class="rocket-specs">
+                      <!-- Фіксований список категорій для всіх ракет -->
+                      {% set spec_fields = [
+                        ('Швидкість м/с', ' м/с'),
+                        ('Вибухова сила кт', ' кт'),
+                        ('Тип', ''),
+                        ('Походження', ''),
+                        ('На озброєнні (з - до)', ''),
+                        ('Оператори', ''),
+                        ('Війни', ''),
+                        ('Розроблено', ''),
+                        ('Виробник', ''),
+                        ('Паливо', ''),
+                        ('Операційна дальність', ' км'),
+                        ('Точність', ' м')
+                      ] %}
+                      
+                      {% for field, unit in spec_fields %}
+                        {% if rocket.get(field) %}
+                          <div class="specs-row">
+                            <div class="specs-label">{{ field.replace('_', ' ') }}:</div>
+                            <div class="specs-value">{{ rocket.get(field) }}{{ unit }}</div>
+                          </div>
+                        {% endif %}
+                      {% endfor %}
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -101,61 +126,67 @@
     padding-bottom: 10px;
     cursor: pointer;
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-start;
     align-items: center;
+  }
+
+  .rocket-thumbnail {
+    width: 40px;
+    height: 40px;
+    object-fit: contain;
+    margin-right: 15px;
+    border-radius: 4px;
+    border: 1px solid #e0e0e0;
+    background-color: #fff;
   }
 
   .toggle-icon {
     font-size: 0.8em;
     transition: transform 0.3s ease;
+    margin-left: auto;
   }
 
   .rocket-details {
-    display: flex;
-    flex-direction: row;
-    gap: 2rem;
     margin-top: 1rem;
-    align-items: flex-start;
   }
 
-  .rocket-text {
-    flex: 2;
+  .rocket-content {
     display: flex;
-    flex-direction: column;
-    gap: 1rem;
+    flex-wrap: wrap;
+    gap: 1.5rem;
   }
 
-  .rocket-specs {
-    background-color: #f0f8f0;
-    padding: 1rem;
-    border-radius: 8px;
+  .rocket-main-info {
+    flex: 1 1 calc(100% - 350px);
+    min-width: 300px;
+    order: 1;
   }
 
-  .rocket-description {
-    font-style: italic;
-    color: #555;
+  .rocket-sidebar {
+    flex: 0 0 320px;
+    max-width: 320px;
+    order: 2;
   }
 
-  .additional-info {
-    padding-top: 1rem;
-    border-top: 1px dashed #ccc;
+  /* This is the key - ensures content can flow under the sidebar */
+  @media (min-width: 769px) {
+    .rocket-main-info:after {
+      content: "";
+      flex: 1000 1 auto;
+    }
   }
 
-  .rocket-image {
-    flex: 1;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  .rocket-image-container {
+    margin-bottom: 1rem;
     background-color: #f5f5f5;
     border-radius: 8px;
     overflow: hidden;
-    min-height: 200px;
-    max-height: 300px;
+    text-align: center;
   }
 
   .rocket-img {
     width: 100%;
-    max-height: 300px;
+    max-height: 250px;
     object-fit: contain;
   }
 
@@ -164,6 +195,66 @@
     text-align: center;
     font-style: italic;
     padding: 2rem;
+    min-height: 150px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .rocket-specs-box {
+    background-color: #f0f8f0;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid #e0e0e0;
+  }
+
+  .rocket-specs-title {
+    background-color: #3e5f3e;
+    color: white;
+    padding: 8px 10px;
+    font-weight: bold;
+    text-align: center;
+  }
+
+  .rocket-specs {
+    padding: 15px;
+  }
+
+  .specs-row {
+    display: flex;
+    border-bottom: 1px dotted #ddd;
+    padding: 6px 0;
+  }
+
+  .specs-row:last-child {
+    border-bottom: none;
+  }
+
+  .specs-label {
+    flex: 0 0 40%;
+    font-weight: bold;
+    color: #444;
+  }
+
+  .specs-value {
+    flex: 0 0 60%;
+  }
+
+  .rocket-description {
+    font-style: italic;
+    color: #444;
+    margin-bottom: 1.5rem;
+    line-height: 1.6;
+  }
+
+  .info-section {
+    margin-bottom: 1.5rem;
+  }
+
+  .info-section h3 {
+    color: #3e5f3e;
+    margin-bottom: 0.5rem;
+    font-size: 1.2rem;
   }
 
   .no-data {
@@ -175,12 +266,17 @@
   }
 
   @media (max-width: 768px) {
-    .rocket-details {
+    .rocket-content {
       flex-direction: column;
     }
 
-    .rocket-image {
-      width: 100%;
+    .rocket-sidebar {
+      max-width: 100%;
+      order: 1;
+    }
+    
+    .rocket-main-info {
+      order: 2;
     }
   }
 </style>
@@ -192,7 +288,7 @@
     const toggleIcon = rocketCard.querySelector('.toggle-icon');
 
     if (rocketElement.style.display === 'none') {
-      rocketElement.style.display = 'flex';
+      rocketElement.style.display = 'block';
       toggleIcon.style.transform = 'rotate(180deg)';
     } else {
       rocketElement.style.display = 'none';

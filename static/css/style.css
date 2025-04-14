@@ -482,3 +482,31 @@ html, body {
     border-radius: 6px;
   }
   
+  /* Додати або модифікувати для розтягування тексту під таблицею */
+.wiki-content-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.wiki-content-left {
+  flex: 1;
+  min-width: 60%;
+  padding-right: 20px;
+}
+
+.wiki-content-right {
+  width: 300px;
+  margin-left: 20px;
+}
+
+/* Для мобільних пристроїв */
+@media (max-width: 768px) {
+  .wiki-content-wrapper {
+      flex-direction: column;
+  }
+  
+  .wiki-content-left, .wiki-content-right {
+      width: 100%;
+      margin-left: 0;
+  }
+}

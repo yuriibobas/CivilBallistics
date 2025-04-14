@@ -26,18 +26,18 @@
       top: 100px;
       left: 20px;
       background: rgba(255, 255, 255, 0.95);
-      padding: 15px;
+      padding: 20px;
       border-radius: 10px;
       z-index: 1000;
       box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
-      width: 250px;
+      width: 280px;
     }
 
     .control-panel select,
     .control-panel button {
       margin-top: 10px;
       width: 100%;
-      padding: 8px;
+      padding: 10px;
       font-size: 16px;
       border-radius: 6px;
       border: 1px solid #ccc;
@@ -48,10 +48,30 @@
       color: white;
       border: none;
       cursor: pointer;
+      transition: all 0.3s ease;
     }
 
     .control-panel button:hover {
       background-color: #45a049;
+    }
+    
+    .rocket-link {
+      display: block;
+      margin-top: 15px;
+      color: #415930;
+      text-decoration: none;
+      text-align: center;
+      font-weight: bold;
+      padding: 10px;
+      background-color: #f0f8f0;
+      border-radius: 6px;
+      border: 1px dashed #b8d4b8;
+      transition: all 0.3s ease;
+    }
+    
+    .rocket-link:hover {
+      background-color: #e0f0e0;
+      border-color: #70a870;
     }
 
     #info-box {
@@ -66,6 +86,47 @@
       max-width: 300px;
       box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
       display: none;
+    }
+    
+    #legend-box {
+      position: absolute;
+      bottom: 20px;
+      left: 20px;
+      background: rgba(255, 255, 255, 0.95);
+      color: #000;
+      padding: 15px;
+      border-radius: 10px;
+      z-index: 1000;
+      max-width: 280px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    }
+    
+    .legend-item {
+      display: flex;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+    
+    .legend-color {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      margin-right: 10px;
+    }
+    
+    .red {
+      background-color: rgba(255, 0, 0, 0.5);
+      border: 1px solid rgba(255, 0, 0, 0.8);
+    }
+    
+    .yellow {
+      background-color: rgba(255, 255, 0, 0.5);
+      border: 1px solid rgba(255, 255, 0, 0.8);
+    }
+    
+    .green {
+      background-color: rgba(0, 255, 0, 0.3);
+      border: 1px solid rgba(0, 255, 0, 0.8);
     }
 
     .navbar {
@@ -115,6 +176,25 @@
       <option value="">-- Виберіть --</option>
     </select>
     <button onclick="calculate()">Розрахувати</button>
+    <div id="rocket-link-container" style="display:none;">
+      <a id="rocket-wiki-link" href="#" class="rocket-link">Детальніше про цю ракету</a>
+    </div>
+  </div>
+
+  <div id="legend-box">
+    <h3 style="margin-top: 0;">Зони ураження</h3>
+    <div class="legend-item">
+      <div class="legend-color red"></div>
+      <div>Червона зона: Зона летального ураження для людей та повного руйнування будівель</div>
+    </div>
+    <div class="legend-item">
+      <div class="legend-color yellow"></div>
+      <div>Жовта зона: Зона серйозних травм для людей та значних пошкоджень будівель</div>
+    </div>
+    <div class="legend-item">
+      <div class="legend-color green"></div>
+      <div>Зелена зона: Зона легких травм та незначних пошкоджень</div>
+    </div>
   </div>
 
   <div id="info-box"></div>
