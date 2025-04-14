@@ -31,7 +31,7 @@
 
                   <!-- Всі інші пункти, крім специфікованих для таблиці -->
                   {% for key, value in rocket.items() %}
-                    {% if key not in ['_id', 'Назва', 'Фото', 'Швидкість м/с', 'Вибухова сила кт', 'Тип', 'Походження', 'На озброєнні (з - до)', 'Оператори', 'Війни', 'Розроблено', 'Виробник', 'Паливо', 'Операційна дальність', 'Точність'] and value %}
+                    {% if key not in ['_id', 'Назва', 'Фото', 'Швидкість м/с', 'Вибухова сила кт', 'Тип', 'Походження', 'На озброєнні (з - до)', 'Оператори', 'Війни', 'Розроблено', 'Виробник', 'Паливо', 'Операційна дальність', 'Точність'] and value and value != 'Н/Д' %}
                       <div class="info-section">
                         <h3>{{ key }}</h3>
                         <p>{{ value }}</p>
@@ -70,7 +70,7 @@
                       ] %}
                       
                       {% for field, unit in spec_fields %}
-                        {% if rocket.get(field) %}
+                        {% if rocket.get(field) and rocket.get(field)|string is defined and 'Н/Д' not in rocket.get(field)|string %}
                           <div class="specs-row">
                             <div class="specs-label">{{ field.replace('_', ' ') }}:</div>
                             <div class="specs-value">{{ rocket.get(field) }}{{ unit }}</div>
