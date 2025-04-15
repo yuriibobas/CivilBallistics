@@ -91,6 +91,32 @@ def calculate_safety():
 
     return jsonify({"zones": zones})
 
+@app.route('/api/rocket-info')
+def get_rocket_info():
+    rocket_name = request.args.get('name')
+    
+    # Шукаємо ракету за назвою в MongoDB колекції
+    rocket = rockets_collection.find_one({"Назва": rocket_name})
+    
+    if rocket:
+        return jsonify({
+            'name': rocket.get('Назва', ''),
+            'photo': rocket.get('Фото', ''),
+            'type': rocket.get('Тип', ''),
+            'origin': rocket.get('Походження', ''),
+            'service': rocket.get('На озброєнні (з - до)', '').split(' - ')[0] if rocket.get('На озброєнні (з - до)') else '',
+            'manufacturer': rocket.get('Виробник', '')
+        })
+    else:
+        return jsonify({
+            'name': rocket_name,
+            'photo': '',
+            'type': 'Немає даних',
+            'origin': 'Немає даних',
+            'service': 'Немає даних',
+            'manufacturer': 'Немає даних'
+        })
+
 @app.route('/calculator')
 def calculator():
     return render_template('calculator.html')
