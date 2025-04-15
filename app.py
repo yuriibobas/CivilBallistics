@@ -3,6 +3,7 @@ import sqlite3
 import os
 from pymongo.mongo_client import MongoClient
 from pymongo.server_api import ServerApi
+import math
 
 app = Flask(__name__)
 
@@ -28,38 +29,6 @@ def query_db(query, args=(), one=False):
     except sqlite3.Error as e:
         print(f"Database error: {e}")
         return None if one else []
-
-# Перевірка та ініціалізація бази даних під час запуску
-def init_db():
-    if not os.path.exists(DATABASE_PATH):
-        try:
-            conn = sqlite3.connect(DATABASE_PATH)
-            c = conn.cursor()
-            
-            # Створення таблиці ракет
-            c.execute('''
-                CREATE TABLE IF NOT EXISTS rockets (
-                    id INTEGER PRIMARY KEY AUTOINCREMENT,
-                    name TEXT UNIQUE NOT NULL,
-                    speed REAL NOT NULL,
-                    explosion_power REAL NOT NULL,
-                    range REAL NOT NULL
-                )
-            ''')
-            
-            # Додавання тестових ракет
-            rockets = [
-                ('Точка-У', 1000, 300, 120000),
-                ('Іскандер', 2100, 500, 500000),
-                ('Калібр', 2500, 700, 1500000)
-            ]
-            
-            c.executemany('INSERT OR IGNORE INTO rockets (name, speed, explosion_power, range) VALUES (?, ?, ?, ?)', rockets)
-            conn.commit()
-            conn.close()
-            print("База даних успішно ініціалізована!")
-        except sqlite3.Error as e:
-            print(f"Помилка при ініціалізації бази даних: {e}")
 
 # Отримання списку ракет з MongoDB
 @app.route('/get_mongo_rockets')
@@ -110,9 +79,9 @@ def calculate_safety():
     explosion_power = data['explosion_power']
 
     # Радіуси небезпеки (змінюється залежно від вибухової сили)
-    red_radius = explosion_power * 5
-    yellow_radius = explosion_power * 10
-    green_radius = explosion_power * 15
+    red_radius = math.cbrt(explosion_power) * 15
+    yellow_radius = math.cbrt(explosion_power) * 40
+    green_radius = math.cbrt(explosion_power) * 100
 
     zones = [
         {"color": "red", "outer_radius": red_radius},
@@ -139,9 +108,6 @@ def instruction():
 @app.route('/contacts')
 def contacts():
     return render_template('contacts.html')
-
-# Ініціалізація бази даних при запуску додатка
-init_db()
 
 if __name__ == '__main__':
     app.run(debug=True)
