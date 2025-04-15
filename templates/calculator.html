@@ -1,203 +1,163 @@
-<!DOCTYPE html>
-<html lang="uk">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Калькулятор</title>
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-  <link rel="icon" href="{{ url_for('static', filename='img/logo.png') }}" type="image/png">
-  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-  <script src="/static/js/map.js" defer></script>
-  <style>
-    html, body {
-      margin: 0;
-      padding: 0;
-      height: 100%;
-      font-family: sans-serif;
-    }
+{% extends "base.html" %}
+{% block content %}
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-    #map {
-      height: 100vh;
-      width: 100vw;
-    }
+<style>
+  /* Скасовуємо відступи для батьківського main контейнера */
+  main {
+    padding: 0 !important;
+    margin: 0 !important;
+    max-width: 100% !important;
+    width: 100% !important;
+  }
 
-    .control-panel {
-      position: absolute;
-      top: 100px;
-      left: 20px;
-      background: rgba(255, 255, 255, 0.95);
-      padding: 20px;
-      border-radius: 10px;
-      z-index: 1000;
-      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
-      width: 280px;
-    }
+  #map {
+    height: calc(100vh - 50px); /* Враховуємо висоту навігаційної панелі */
+    width: 100vw;
+    position: absolute;
+    left: 0;
+    top: 50px; /* Відступ для навігаційної панелі */
+  }
 
-    .control-panel select,
-    .control-panel button {
-      margin-top: 10px;
-      width: 100%;
-      padding: 10px;
-      font-size: 16px;
-      border-radius: 6px;
-      border: 1px solid #ccc;
-    }
+  .control-panel {
+    position: absolute;
+    top: 100px; /* Зменшено відступ зверху */
+    left: 20px;
+    background: rgba(255, 255, 255, 0.95);
+    padding: 20px;
+    border-radius: 10px;
+    z-index: 1000;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+    width: 280px;
+  }
 
-    .control-panel button {
-      background-color: #4CAF50;
-      color: white;
-      border: none;
-      cursor: pointer;
-      transition: all 0.3s ease;
-    }
+  .control-panel select,
+  .control-panel button {
+    margin-top: 10px;
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+  }
 
-    .control-panel button:hover {
-      background-color: #45a049;
-    }
-    
-    .rocket-link {
-      display: block;
-      margin-top: 15px;
-      color: #415930;
-      text-decoration: none;
-      text-align: center;
-      font-weight: bold;
-      padding: 10px;
-      background-color: #f0f8f0;
-      border-radius: 6px;
-      border: 1px dashed #b8d4b8;
-      transition: all 0.3s ease;
-    }
-    
-    .rocket-link:hover {
-      background-color: #e0f0e0;
-      border-color: #70a870;
-    }
+  .control-panel button {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
 
-    #info-box {
-      position: absolute;
-      bottom: 20px;
-      right: 20px;
-      background: rgba(0, 0, 0, 0.85);
-      color: #fff;
-      padding: 15px;
-      border-radius: 10px;
-      z-index: 1000;
-      max-width: 300px;
-      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
-      display: none;
-    }
-    
-    #legend-box {
-      position: absolute;
-      bottom: 20px;
-      left: 20px;
-      background: rgba(255, 255, 255, 0.95);
-      color: #000;
-      padding: 15px;
-      border-radius: 10px;
-      z-index: 1000;
-      max-width: 280px;
-      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-    }
-    
-    .legend-item {
-      display: flex;
-      align-items: center;
-      margin-bottom: 10px;
-    }
-    
-    .legend-color {
-      width: 20px;
-      height: 20px;
-      border-radius: 50%;
-      margin-right: 10px;
-    }
-    
-    .red {
-      background-color: rgba(255, 0, 0, 0.5);
-      border: 1px solid rgba(255, 0, 0, 0.8);
-    }
-    
-    .yellow {
-      background-color: rgba(255, 255, 0, 0.5);
-      border: 1px solid rgba(255, 255, 0, 0.8);
-    }
-    
-    .green {
-      background-color: rgba(0, 255, 0, 0.3);
-      border: 1px solid rgba(0, 255, 0, 0.8);
-    }
-
-    .navbar {
-      background: #415930;
-      color: white;
-      padding: 1rem;
-      display: flex;
-      justify-content: space-around;
-      align-items: center;
-      font-weight: bold;
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      z-index: 1000;
-      box-sizing: border-box;
-    }
-
-    .navbar a {
-      color: white;
-      text-decoration: none;
-      margin: 0 10px;
-    }
-
-    .navbar .logo {
-      background: #f2f7e7;
-      color: #415930;
-      padding: 5px 15px;
-      border-radius: 20px;
-    }
-  </style>
-</head>
-<body>
-  <nav class="navbar">
-    <a href="/wiki">Балістика Wiki</a>
-    <a href="/calculator">Калькулятор</a>
-    <div class="logo"><a href="/" style="color: #415930; text-decoration: none;">CivilBallistics</a></div>
-    <a href="/instruction">Інструкція</a>
-    <a href="/contacts">Контакти</a>
-  </nav>
+  .control-panel button:hover {
+    background-color: #45a049;
+  }
   
-  <div id="map"></div>
+  .rocket-link {
+    display: block;
+    margin-top: 15px;
+    color: #415930;
+    text-decoration: none;
+    text-align: center;
+    font-weight: bold;
+    padding: 10px;
+    background-color: #f0f8f0;
+    border-radius: 6px;
+    border: 1px dashed #b8d4b8;
+    transition: all 0.3s ease;
+  }
+  
+  .rocket-link:hover {
+    background-color: #e0f0e0;
+    border-color: #70a870;
+  }
 
-  <div class="control-panel">
-    <label for="missile-select">Оберіть ракету:</label>
-    <select id="missile-select">
-      <option value="">-- Виберіть --</option>
-    </select>
-    <button onclick="calculate()">Розрахувати</button>
-    <div id="rocket-link-container" style="display:none;">
-      <a id="rocket-wiki-link" href="#" class="rocket-link">Детальніше про цю ракету</a>
-    </div>
+  #info-box {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    background: rgba(0, 0, 0, 0.85);
+    color: #fff;
+    padding: 15px;
+    border-radius: 10px;
+    z-index: 1000;
+    max-width: 300px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+    display: none;
+  }
+  
+  #legend-box {
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+    background: rgba(255, 255, 255, 0.95);
+    color: #000;
+    padding: 15px;
+    border-radius: 10px;
+    z-index: 1000;
+    max-width: 280px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+  }
+  
+  .legend-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+  
+  .legend-color {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    margin-right: 10px;
+  }
+  
+  .red {
+    background-color: rgba(255, 0, 0, 0.5);
+    border: 1px solid rgba(255, 0, 0, 0.8);
+  }
+  
+  .yellow {
+    background-color: rgba(255, 255, 0, 0.5);
+    border: 1px solid rgba(255, 255, 0, 0.8);
+  }
+  
+  .green {
+    background-color: rgba(0, 255, 0, 0.3);
+    border: 1px solid rgba(0, 255, 0, 0.8);
+  }
+</style>
+
+<div id="map"></div>
+
+<div class="control-panel">
+  <label for="missile-select">Оберіть ракету:</label>
+  <select id="missile-select">
+    <option value="">-- Виберіть --</option>
+  </select>
+  <button onclick="calculate()">Розрахувати</button>
+  <div id="rocket-link-container" style="display:none;">
+    <a id="rocket-wiki-link" href="#" class="rocket-link">Детальніше про цю ракету</a>
   </div>
+</div>
 
-  <div id="legend-box">
-    <h3 style="margin-top: 0;">Зони ураження</h3>
-    <div class="legend-item">
-      <div class="legend-color red"></div>
-      <div>Червона зона: Зона летального ураження для людей та повного руйнування будівель</div>
-    </div>
-    <div class="legend-item">
-      <div class="legend-color yellow"></div>
-      <div>Жовта зона: Зона серйозних травм для людей та значних пошкоджень будівель</div>
-    </div>
-    <div class="legend-item">
-      <div class="legend-color green"></div>
-      <div>Зелена зона: Зона легких травм та незначних пошкоджень</div>
-    </div>
+<div id="legend-box">
+  <h3 style="margin-top: 0;">Зони ураження</h3>
+  <div class="legend-item">
+    <div class="legend-color red"></div>
+    <div>Червона зона: Зона летального ураження для людей та повного руйнування будівель</div>
   </div>
+  <div class="legend-item">
+    <div class="legend-color yellow"></div>
+    <div>Жовта зона: Зона серйозних травм для людей та значних пошкоджень будівель</div>
+  </div>
+  <div class="legend-item">
+    <div class="legend-color green"></div>
+    <div>Зелена зона: Зона легких травм та незначних пошкоджень</div>
+  </div>
+</div>
 
-  <div id="info-box"></div>
-</body>
-</html>
+<div id="info-box"></div>
+{% endblock %}
