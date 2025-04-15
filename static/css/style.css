@@ -13,11 +13,6 @@ body {
   justify-content: space-around;
   align-items: center;
   font-weight: bold;
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  z-index: 20; /* Вище ніж у карти */
 }
 
 .navbar a {
@@ -588,7 +583,8 @@ html, body {
 }
 
 .calculator-page-container #map {
-  height: 100vh; /* На весь екран по висоті */
+  height: calc(100vh - 62px) !important; /* Subtract navbar height (adjust as needed) */
+  margin-top: 62px !important; /* Add navbar height to top margin (adjust as needed) */
   width: 100vw; /* На весь екран по ширині */
   position: fixed; /* Fixed замість absolute для кращої поведінки при скролінгу */
   left: 0;
@@ -609,6 +605,14 @@ html, body {
     z-index: 30; /* Вище ніж у навігаційної панелі */
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
     width: 280px;
+}
+
+.calculator-page-container .navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 20;
 }
 
 .control-panel select,
