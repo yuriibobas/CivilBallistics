@@ -110,7 +110,7 @@ $(document).ready(function () {
               }).addTo(map));
   
 
-              map.setView([lat, lng], 13);
+              map.setView([lat, lng], 18);
   
               const infoBox = document.getElementById("info-box");
               infoBox.style.display = 'block';

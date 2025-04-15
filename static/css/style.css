@@ -502,9 +502,8 @@ html, body {
 .wiki-page .specs-value {
   flex: 0 0 60%;
 }
-
 .wiki-page .rocket-description {
-  font-style: italic;
+  font-style: normal;
   color: #444;
   margin-bottom: 1.5rem;
   line-height: 1.6;
