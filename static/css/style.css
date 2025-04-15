@@ -1,488 +1,555 @@
 body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    background: #f0f0f0;
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background: #f0f0f0;
 }
 
 .navbar {
-    background: #415930;
-    color: white;
-    padding: 1rem;
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    font-weight: bold;
+  background: #415930;
+  color: white;
+  padding: 1rem;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  font-weight: bold;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 20; /* Вище ніж у карти */
 }
 
 .navbar a {
-    color: white;
-    text-decoration: none;
-    margin: 0 10px;
+  color: white;
+  text-decoration: none;
+  margin: 0 10px;
 }
 
 .navbar .logo {
-    background: #f2f7e7;
-    color: #415930;
-    padding: 5px 15px;
-    border-radius: 20px;
+  background: #f2f7e7;
+  color: #415930;
+  padding: 5px 15px;
+  border-radius: 20px;
 }
 
+
+/* Базові стилі для main */
 main {
-    background: white;
-    padding: 2rem;
-    max-width: 1200px;
-    margin: 20px auto;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  background: white;
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 20px auto;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
 }
 
 .home {
-    display: flex;
-    justify-content: space-between;
-    gap: 2rem;
+  display: flex;
+  justify-content: space-between;
+  gap: 2rem;
 }
 
 .home-text {
-    flex: 1;
+  flex: 1;
 }
 
 .home-image img {
-    max-width: 400px;
-    border-radius: 10px;
+  max-width: 400px;
+  border-radius: 10px;
 }
 
 .page {
-    padding: 1rem;
-    line-height: 1.6;
+  padding: 1rem;
+  line-height: 1.6;
 }
 
 .page ul, .page ol {
-    padding-left: 1.5rem;
+  padding-left: 1.5rem;
 }
 
 .page a {
-    color: #2c5e2e;
-    text-decoration: none;
+  color: #2c5e2e;
+  text-decoration: none;
 }
 
 .page a:hover {
-    text-decoration: underline;
+  text-decoration: underline;
 }
+
+/* Загальні стилі для instruction-page */
 .instruction-page {
-    padding: 2rem;
-    background: linear-gradient(to bottom right, #e5f0e5, #f5faf5); /* ніжно-зелений фон */
-    border-radius: 10px;
+  padding: 2rem;
+  background: linear-gradient(to bottom right, #e5f0e5, #f5faf5); /* ніжно-зелений фон */
+  border-radius: 10px;
 }
 
+/* Загальні стилі для заголовків градієнта */
 .gradient-title {
-    font-size: 2.5rem;
-    font-weight: bold;
-    color: #2d4f2d;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: #2d4f2d;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 }
 
+/* Загальні стилі для вступного тексту */
 .intro-text {
-    font-size: 1.1rem;
-    margin-bottom: 2rem;
-    color: #333;
+  font-size: 1.1rem;
+  margin-bottom: 2rem;
+  color: #333;
 }
 
 .steps {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 1.5rem;
-    justify-items: stretch;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+  justify-items: stretch;
 }
 
-
 .step-card {
-    background-color: #ffffffdd; /* трохи прозорий білий */
-    border-radius: 12px;
-    padding: 1.5rem;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-    transition: transform 0.3s ease, background-color 0.3s ease;
+  background-color: #ffffffdd; /* трохи прозорий білий */
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+  transition: transform 0.3s ease, background-color 0.3s ease;
 }
 
 .step-card:hover {
-    transform: translateY(-5px);
-    background-color: #f0f9f0;
+  transform: translateY(-5px);
+  background-color: #f0f9f0;
 }
 
 .step-card h2 {
-    margin-top: 0;
-    color: #2b4b2b;
+  margin-top: 0;
+  color: #2b4b2b;
 }
 
 .step-card p {
-    color: #444;
+  color: #444;
 }
 
+/* Стилі для сторінки контактів */
 .contacts-page {
-    padding: 2rem;
-    background: linear-gradient(to bottom right, #f3faf3, #eaf5ea);
-    border-radius: 10px;
+  padding: 2rem;
+  background: linear-gradient(to bottom right, #f3faf3, #eaf5ea);
+  border-radius: 10px;
 }
 
 .contact-cards {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 1.5rem;
-    margin-bottom: 2rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
 }
 
 .contact-card {
-    flex: 1 1 250px;
-    background-color: #ffffffdd;
-    padding: 1.5rem;
-    border-radius: 12px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
-    transition: transform 0.3s ease;
+  flex: 1 1 250px;
+  background-color: #ffffffdd;
+  padding: 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+  transition: transform 0.3s ease;
 }
 
 .contact-card:hover {
-    transform: translateY(-5px);
-    background-color: #f0f9f0;
+  transform: translateY(-5px);
+  background-color: #f0f9f0;
 }
 
 .contact-card h2 {
-    margin-top: 0;
-    color: #2d4f2d;
+  margin-top: 0;
+  color: #2d4f2d;
 }
 
 .contact-card a {
-    text-decoration: none;
-    color: #2b6e2b;
-    font-weight: bold;
+  text-decoration: none;
+  color: #2b6e2b;
+  font-weight: bold;
 }
 
 .contact-card a:hover {
-    text-decoration: underline;
+  text-decoration: underline;
 }
 
 .outro-text {
-    text-align: center;
-    font-size: 1.1rem;
-    color: #333;
+  text-align: center;
+  font-size: 1.1rem;
+  color: #333;
 }
 
+/* Стилі для сторінки калькулятора */
 .calculator-page {
-    padding: 2rem;
-    background: linear-gradient(to bottom right, #ecf4ec, #f6fdf6);
-    border-radius: 12px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+  padding: 2rem;
+  background: linear-gradient(to bottom right, #ecf4ec, #f6fdf6);
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.05);
 }
 
-.gradient-title {
-    font-size: 2.3rem;
-    font-weight: bold;
-    text-align: center;
-    margin-bottom: 2rem;
-    background: linear-gradient(to right, #415930, #7ba96f);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+/* Перевизначення заголовка градієнта для калькулятора */
+.calculator-page .gradient-title {
+  font-size: 2.3rem;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 2rem;
+  background: linear-gradient(to right, #415930, #7ba96f);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 .calc-section {
-    background-color: #ffffffee;
-    padding: 1.5rem;
-    margin-bottom: 2rem;
-    border-radius: 12px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-    transition: box-shadow 0.3s ease;
+  background-color: #ffffffee;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  transition: box-shadow 0.3s ease;
 }
 
 .calc-section:hover {
-    box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.08);
 }
 
 .calc-section h2 {
-    margin-top: 0;
-    color: #2c4e2c;
+  margin-top: 0;
+  color: #2c4e2c;
 }
 
+/* Загальні стилі для карти */
 #map {
-    height: 500px;
-    width: 100%;
-    margin-top: 1rem;
-    border-radius: 10px;
-    border: 1px solid #ccc;
+  height: 500px;
+  width: 100%;
+  margin-top: 1rem;
+  border-radius: 10px;
+  border: 1px solid #ccc;
 }
 
 select, button {
-    padding: 10px 16px;
-    font-size: 1rem;
-    border-radius: 6px;
-    border: 1px solid #ccc;
-    margin-right: 10px;
+  padding: 10px 16px;
+  font-size: 1rem;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  margin-right: 10px;
 }
 
 button {
-    background-color: #4CAF50;
-    color: white;
-    border: none;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 
 button:hover {
-    background-color: #45a049;
+  background-color: #45a049;
 }
 
 button:disabled {
-    background-color: #cccccc;
-    cursor: not-allowed;
+  background-color: #cccccc;
+  cursor: not-allowed;
 }
 
 #result {
-    padding: 1rem;
-    background-color: #f4f4f4;
-    border-radius: 10px;
-    border: 1px solid #ddd;
-    font-size: 1rem;
-    color: #333;
-    transition: all 0.3s ease;
+  padding: 1rem;
+  background-color: #f4f4f4;
+  border-radius: 10px;
+  border: 1px solid #ddd;
+  font-size: 1rem;
+  color: #333;
+  transition: all 0.3s ease;
 }
+
 html, body {
-    height: 100%;
-    margin: 0;
-    padding: 0;
+  height: 100%;
+  margin: 0;
+  padding: 0;
 }
 
+/* Стилі для fullscreen-map */
 .fullscreen-map {
-    height: 100vh;
-    width: 100vw;
-    margin: 0;
-    border: none;
-    border-radius: 0;
+  height: 100vh;
+  width: 100vw;
+  margin: 0;
+  border: none;
+  border-radius: 0;
 }
+
 .map-controls {
-    position: absolute;
-    top: 20px;
-    left: 20px;
-    z-index: 1000;
-    background: white;
-    padding: 10px;
-    border-radius: 8px;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  z-index: 1000;
+  background: white;
+  padding: 10px;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
 }
 
-/* === Wiki Page Beautiful Green-Themed === */
+/* === Стилі для Wiki сторінки === */
 .wiki-page {
-    background: linear-gradient(to bottom right, #f3faf3, #e9f2e9);
-    padding: 2rem 1rem;
-    min-height: 100vh;
-  }
-  
-  .wiki-page .container {
-    max-width: 850px;
-    margin: 80px auto;
-    background: #ffffff;
-    padding: 35px;
-    border-radius: 14px;
-    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
-    border: 1px solid #d8e8d8;
-  }
-  
-  .wiki-page h1 {
-    font-size: 2.4rem;
-    margin-bottom: 1.5rem;
-    color: #2c5e2c;
-    text-align: center;
-  }
-  
-  .wiki-page p {
-    font-size: 1.2rem;
-    line-height: 1.7;
-    color: #333;
-    margin-bottom: 1.3rem;
-    text-align: justify;
-  }
-  
-  #back-button {
-    position: absolute;
-    top: 25px;
-    left: 25px;
-    z-index: 1000;
-    padding: 12px 24px;
-    border-radius: 30px;
-    border: none;
-    background: #4CAF50;
-    color: white;
-    font-size: 16px;
-    cursor: pointer;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-    transition: background-color 0.3s ease;
-  }
-  
-  #back-button:hover {
-    background-color: #388e3c;
-  }
-  
+  background: linear-gradient(to bottom right, #f3faf3, #e9f2e9);
+  padding: 2rem 1rem;
+  min-height: 100vh;
+}
 
-  .hero-section {
-    background: linear-gradient(to bottom right, #eef6ee, #f7fbf7);
-    padding: 3rem 2rem;
-    border-radius: 16px;
-    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.05);
+.wiki-page .container {
+  max-width: 950px; /* використовуємо більше значення */
+  margin: 80px auto;
+  background: #ffffff;
+  padding: 35px;
+  border-radius: 14px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+  border: 1px solid #d8e8d8;
+}
+
+.wiki-page h1 {
+  font-size: 2.4rem;
+  margin-bottom: 1.5rem;
+  color: #2c5e2c;
+  text-align: center;
+}
+
+.wiki-page p {
+  font-size: 1.2rem;
+  line-height: 1.7;
+  color: #333;
+  margin-bottom: 1.3rem;
+  text-align: justify;
+}
+
+#back-button {
+  position: absolute;
+  top: 25px;
+  left: 25px;
+  z-index: 1000;
+  padding: 12px 24px;
+  border-radius: 30px;
+  border: none;
+  background: #4CAF50;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  transition: background-color 0.3s ease;
+}
+
+#back-button:hover {
+  background-color: #388e3c;
+}
+
+.hero-section {
+  background: linear-gradient(to bottom right, #eef6ee, #f7fbf7);
+  padding: 3rem 2rem;
+  border-radius: 16px;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.05);
 }
 
 .home-text .features h2 {
-    font-size: 1.8rem;
-    color: #2d4f2d;
-    margin-top: 2rem;
+  font-size: 1.8rem;
+  color: #2d4f2d;
+  margin-top: 2rem;
 }
 
 .home-text .features ul {
-    padding-left: 1.5rem;
-    list-style-type: disc;
+  padding-left: 1.5rem;
+  list-style-type: disc;
 }
 
 .home-text .features li {
-    font-size: 1.1rem;
-    margin-bottom: 0.8rem;
-    color: #333;
-    line-height: 1.6;
-    text-align: justify;
+  font-size: 1.1rem;
+  margin-bottom: 0.8rem;
+  color: #333;
+  line-height: 1.6;
+  text-align: justify;
 }
 
+/* Стилі для списку ракет на Wiki сторінці */
+.wiki-page .rockets-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  margin-top: 2rem;
+}
 
-.wiki-page .container {
-    max-width: 950px;
-    margin: 80px auto;
-    background: #ffffff;
-    padding: 35px;
-    border-radius: 14px;
-    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
-    border: 1px solid #d8e8d8;
+.wiki-page .rocket-card {
+  background-color: #f9f9f9;
+  border-radius: 10px;
+  padding: 1.5rem;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.wiki-page .rocket-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+}
+
+.wiki-page .rocket-title {
+  color: #3e5f3e;
+  margin-top: 0;
+  border-bottom: 2px solid #e0e0e0;
+  padding-bottom: 10px;
+  cursor: pointer;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.wiki-page .rocket-thumbnail {
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+  margin-right: 15px;
+  border-radius: 4px;
+  border: 1px solid #e0e0e0;
+  background-color: #fff;
+}
+
+.wiki-page .toggle-icon {
+  font-size: 0.8em;
+  transition: transform 0.3s ease;
+  margin-left: auto;
+}
+
+.wiki-page .rocket-details {
+  margin-top: 1rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.wiki-page .rocket-content {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+}
+
+.wiki-page .rocket-main-info {
+  flex: 1 1 calc(100% - 350px);
+  min-width: 300px;
+  order: 1;
+}
+
+.wiki-page .rocket-sidebar {
+  flex: 0 0 320px;
+  max-width: 320px;
+  order: 2;
+}
+
+/* This is the key - ensures content can flow under the sidebar */
+@media (min-width: 769px) {
+  .wiki-page .rocket-main-info:after {
+      content: "";
+      flex: 1000 1 auto;
   }
-  
-  .rockets-list {
-    display: flex;
-    flex-direction: column;
-    gap: 2rem;
-    margin-top: 2rem;
-  }
-  
-  .rocket-card {
-    background-color: #f9f9f9;
-    border-radius: 10px;
-    padding: 1.5rem;
-    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-  }
-  
-  .rocket-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
-  }
-  
-  .rocket-card h2 {
-    color: #3e5f3e;
-    margin-top: 0;
-    border-bottom: 2px solid #e0e0e0;
-    padding-bottom: 10px;
-  }
-  
-  .rocket-details {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 1.5rem;
-  }
-  
-  .rocket-specs {
-    background-color: #f0f8f0;
-    padding: 1rem;
-    border-radius: 8px;
-  }
-  
-  .rocket-specs p {
-    margin: 0.5rem 0;
-  }
-  
-  .rocket-description {
-    grid-column: span 2;
-    margin-top: 1rem;
-    font-style: italic;
-    color: #555;
-    line-height: 1.6;
-  }
-  
-  .additional-info {
-    grid-column: span 2;
-    margin-top: 1rem;
-    padding-top: 1rem;
-    border-top: 1px dashed #ccc;
-  }
-  
-  .intro-text {
-    font-size: 1.1rem;
-    margin-bottom: 2rem;
-    color: #444;
-    text-align: justify;
-  }
-  
-  .no-data {
-    background-color: #f0f8f0;
-    padding: 2rem;
-    border-radius: 10px;
-    text-align: center;
-    color: #555;
-    margin-top: 2rem;
-  }
-  
-  @media (max-width: 768px) {
-    .rocket-details {
-      grid-template-columns: 1fr;
-    }
-    
-    .rocket-description, 
-    .additional-info {
-      grid-column: span 1;
-    }
+}
+
+.wiki-page .rocket-image-container {
+  margin-bottom: 1rem;
+  background-color: #f5f5f5;
+  border-radius: 8px;
+  overflow: hidden;
+  text-align: center;
+}
+
+.wiki-page .rocket-img {
+  width: 100%;
+  max-height: 250px;
+  object-fit: contain;
+}
+
+.wiki-page .image-placeholder {
+  color: #999;
+  text-align: center;
+  font-style: italic;
+  padding: 2rem;
+  min-height: 150px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.wiki-page .rocket-specs-box {
+  background-color: #f0f8f0;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid #e0e0e0;
+}
+
+.wiki-page .rocket-specs-title {
+  background-color: #3e5f3e;
+  color: white;
+  padding: 8px 10px;
+  font-weight: bold;
+  text-align: center;
+}
+
+.wiki-page .rocket-specs {
+  padding: 15px;
+}
+
+.wiki-page .specs-row {
+  display: flex;
+  border-bottom: 1px dotted #ddd;
+  padding: 6px 0;
+}
+
+.wiki-page .specs-row:last-child {
+  border-bottom: none;
+}
+
+.wiki-page .specs-label {
+  flex: 0 0 40%;
+  font-weight: bold;
+  color: #444;
+}
+
+.wiki-page .specs-value {
+  flex: 0 0 60%;
+}
+
+.wiki-page .rocket-description {
+  font-style: italic;
+  color: #444;
+  margin-bottom: 1.5rem;
+  line-height: 1.6;
+}
+
+.wiki-page .info-section {
+  margin-bottom: 1.5rem;
+}
+
+.wiki-page .info-section h3 {
+  color: #3e5f3e;
+  margin-bottom: 0.5rem;
+  font-size: 1.2rem;
+}
+
+.wiki-page .no-data {
+  background-color: #f0f8f0;
+  padding: 2rem;
+  border-radius: 10px;
+  text-align: center;
+  color: #555;
+  margin-top: 2rem;
+}
+
+/* Адаптивні стилі для Wiki сторінки */
+@media (max-width: 768px) {
+  .wiki-page .rocket-content {
+      flex-direction: column;
   }
 
+  .wiki-page .rocket-sidebar {
+      max-width: 100%;
+      order: 1;
+  }
+  
+  .wiki-page .rocket-main-info {
+      order: 2;
+  }
+}
 
-
-  .rocket-details {
-    display: flex;
-    flex-direction: row;
-    gap: 2rem;
-    margin-top: 1rem;
-    align-items: flex-start;
-  }
-  
-  .rocket-text {
-    flex: 3;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    gap: 1rem;
-  }
-  
-  .rocket-image {
-    flex: 2;
-    display: flex;
-    justify-content: center;
-    align-items: flex-start; /* вирівнювання по верху */
-    background-color: #f5f5f5;
-    border-radius: 8px;
-    overflow: hidden;
-    padding: 1rem;
-    min-height: 250px;
-    max-height: 100%;
-  }
-  
-  .rocket-img {
-    width: 100%;
-    max-height: 350px; /* трішки більше */
-    object-fit: contain;
-    border-radius: 6px;
-  }
-  
-  /* Додати або модифікувати для розтягування тексту під таблицею */
 .wiki-content-wrapper {
   display: flex;
   flex-wrap: wrap;
@@ -504,9 +571,203 @@ html, body {
   .wiki-content-wrapper {
       flex-direction: column;
   }
-  
+
   .wiki-content-left, .wiki-content-right {
       width: 100%;
       margin-left: 0;
   }
+}
+
+/* === Стилі для сторінки калькулятора (ізольовані) === */
+/* Замінюємо глобальне правило main на специфічне для калькулятора */
+.calculator-page-container main {
+  padding: 0 !important;
+  margin: 0 !important;
+  max-width: 100% !important;
+  width: 100% !important;
+}
+
+.calculator-page-container #map {
+  height: 100vh; /* На весь екран по висоті */
+  width: 100vw; /* На весь екран по ширині */
+  position: fixed; /* Fixed замість absolute для кращої поведінки при скролінгу */
+  left: 0;
+  top: 0; /* Без відступу зверху */
+  z-index: 10; /* Щоб карта була над усіма елементами, крім контролів */
+  margin: 0;
+  border: none;
+  border-radius: 0;
+}
+
+.calculator-page-container .control-panel {
+    position: fixed; /* Fixed замість absolute */
+    top: 70px; /* Відступ від навігаційної панелі */
+    left: 20px;
+    background: rgba(255, 255, 255, 0.95);
+    padding: 20px;
+    border-radius: 10px;
+    z-index: 30; /* Вище ніж у навігаційної панелі */
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+    width: 280px;
+}
+
+.control-panel select,
+.control-panel button {
+  margin-top: 10px;
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+.control-panel button {
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.control-panel button:hover {
+  background-color: #45a049;
+}
+
+.rocket-link {
+  display: block;
+  margin-top: 15px;
+  color: #415930;
+  text-decoration: none;
+  text-align: center;
+  font-weight: bold;
+  padding: 10px;
+  background-color: #f0f8f0;
+  border-radius: 6px;
+  border: 1px dashed #b8d4b8;
+  transition: all 0.3s ease;
+}
+
+.rocket-link:hover {
+  background-color: #e0f0e0;
+  border-color: #70a870;
+}
+
+#info-box {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  background: rgba(0, 0, 0, 0.85);
+  color: #fff;
+  padding: 15px;
+  border-radius: 10px;
+  z-index: 1000;
+  max-width: 300px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+  display: none;
+}
+
+#legend-box {
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
+  background: rgba(255, 255, 255, 0.95);
+  color: #000;
+  padding: 15px;
+  border-radius: 10px;
+  z-index: 1000;
+  max-width: 280px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.legend-color {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  margin-right: 10px;
+}
+
+.red {
+  background-color: rgba(255, 0, 0, 0.5);
+  border: 1px solid rgba(255, 0, 0, 0.8);
+}
+
+.yellow {
+  background-color: rgba(255, 255, 0, 0.5);
+  border: 1px solid rgba(255, 255, 0, 0.8);
+}
+
+.green {
+  background-color: rgba(0, 255, 0, 0.3);
+  border: 1px solid rgba(0, 255, 0, 0.8);
+}
+
+.rocket-info-panel {
+  position: absolute;
+  top: 80px;
+  right: 20px;
+  background: rgba(255, 255, 255, 0.95);
+  padding: 15px;
+  border-radius: 10px;
+  z-index: 1000;
+  width: 350px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+  display: none; /* Прихований за замовчуванням, показується при виборі ракети */
+}
+
+.rocket-info-panel h3 {
+  margin-top: 0;
+  margin-bottom: 15px;
+  color: #3e5f3e;
+  font-size: 18px;
+  text-align: center;
+  border-bottom: 1px solid #e0e0e0;
+  padding-bottom: 8px;
+}
+
+.rocket-info-content {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.rocket-info-image {
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.rocket-info-image img {
+  max-width: 100%;
+  max-height: 150px;
+  object-fit: contain;
+  border-radius: 6px;
+  border: 1px solid #e0e0e0;
+  background-color: #f5f5f5;
+}
+
+.rocket-info-details {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.rocket-info-item {
+  display: flex;
+  flex-direction: row;
+  line-height: 1.5;
+}
+
+.info-label {
+  font-weight: bold;
+  width: 40%;
+  color: #444;
+}
+
+.info-value {
+  width: 60%;
 }
