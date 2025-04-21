@@ -51,5 +51,5 @@
 - **Backend**: Python (Flask)
 - **База даних**: MongoDB  
 - **Хостинг**: Render  
-- **Інші інструменти**: Chart.js, Axios, Mongoose, TailwindCSS
+- **Інші інструменти**: OpenStreetMap (Leaflet.js) для використання мапи
 
