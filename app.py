@@ -7,17 +7,14 @@ import math
 
 app = Flask(__name__)
 
-# Визначення абсолютного шляху до бази даних
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 DATABASE_PATH = os.path.join(BASE_DIR, 'rockets.db')
 
-# Підключення до MongoDB
 uri = "mongodb+srv://hayevska:2hyrfNt7jQVd3hf@cluster0.qjtidh4.mongodb.net/?appName=Cluster0"
 mongo_client = MongoClient(uri, server_api=ServerApi('1'))
 mongo_db = mongo_client["Funiania_Ballistics"]
 rockets_collection = mongo_db["Rockets"]
 
-# Функція для отримання даних із БД
 def query_db(query, args=(), one=False):
     try:
         conn = sqlite3.connect(DATABASE_PATH)
@@ -30,12 +27,10 @@ def query_db(query, args=(), one=False):
         print(f"Database error: {e}")
         return None if one else []
 
-# Отримання списку ракет з MongoDB
 @app.route('/get_mongo_rockets')
 def get_mongo_rockets():
     try:
         rockets = list(rockets_collection.find({}, {"Назва": 1, "Швидкість": 1, "Вибухова_сила": 1, "Дальність": 1}))
-        # Перетворюємо ObjectId на рядок для серіалізації JSON
         for rocket in rockets:
             rocket["_id"] = str(rocket["_id"])
         return jsonify(rockets)
@@ -43,7 +38,7 @@ def get_mongo_rockets():
         print(f"Помилка при отриманні даних з MongoDB: {e}")
         return jsonify([])
 
-# Отримання характеристик конкретної ракети з MongoDB за ID
+
 @app.route('/get_mongo_rocket/<rocket_id>')
 def get_mongo_rocket(rocket_id):
     try:
@@ -57,13 +52,11 @@ def get_mongo_rocket(rocket_id):
         print(f"Помилка при отриманні даних з MongoDB: {e}")
         return jsonify({"error": str(e)})
 
-# Отримання списку ракет зі SQLite
 @app.route('/get_rockets')
 def get_rockets():
     rockets = query_db('SELECT id, name FROM rockets')
     return jsonify(rockets)
 
-# Отримання характеристик конкретної ракети зі SQLite
 @app.route('/get_rocket/<int:rocket_id>')
 def get_rocket(rocket_id):
     rocket = query_db('SELECT * FROM rockets WHERE id = ?', (rocket_id,), one=True)
@@ -78,10 +71,9 @@ def calculate_safety():
     data = request.json
     explosion_power = data['explosion_power']
 
-    # Радіуси небезпеки (змінюється залежно від вибухової сили)
-    red_radius = math.cbrt(explosion_power) * 15
-    yellow_radius = math.cbrt(explosion_power) * 40
-    green_radius = math.cbrt(explosion_power) * 100
+    red_radius = math.sqrt(explosion_power) * 10
+    yellow_radius = math.sqrt(explosion_power) * 30
+    green_radius = math.sqrt(explosion_power) * 100
 
     zones = [
         {"color": "red", "outer_radius": red_radius},
@@ -94,8 +86,7 @@ def calculate_safety():
 @app.route('/api/rocket-info')
 def get_rocket_info():
     rocket_name = request.args.get('name')
-    
-    # Шукаємо ракету за назвою в MongoDB колекції
+
     rocket = rockets_collection.find_one({"Назва": rocket_name})
     
     if rocket:
@@ -123,7 +114,6 @@ def calculator():
 
 @app.route('/wiki')
 def wiki():
-    # Отримання всіх ракет з MongoDB колекції
     rockets = list(rockets_collection.find())
     return render_template('wiki.html', rockets=rockets)
 
