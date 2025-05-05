@@ -774,3 +774,215 @@ html, body {
 .info-value {
   width: 60%;
 }
+
+/* Адаптивні стилі для мобільних пристроїв */
+
+/* Загальні адаптивні стилі для всього сайту */
+@media (max-width: 767px) {
+  /* Базові стилі */
+  body {
+    font-size: 16px;
+  }
+  
+  /* Навігаційне меню */
+  .navbar {
+    flex-direction: column;
+    padding: 0.5rem;
+  }
+  
+  .navbar a {
+    margin: 5px 0;
+  }
+  
+  /* Головна сторінка */
+  .home {
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
+  .home-image img {
+    max-width: 100%;
+    height: auto;
+  }
+  
+  /* Загальні стилі контенту */
+  main {
+    padding: 1rem;
+    margin: 10px;
+    width: calc(100% - 20px);
+    box-sizing: border-box;
+  }
+  
+  /* Для всіх секцій з grid layout */
+  .steps {
+    grid-template-columns: 1fr;
+  }
+  
+  /* Інструкції */
+  .instruction-page {
+    padding: 1rem;
+  }
+  
+  /* Калькулятор */
+  .calculator-page {
+    padding: 1rem;
+  }
+  
+  .calculator-page .gradient-title {
+    font-size: 1.8rem;
+  }
+  
+  /* Для сторінки контактів */
+  .contact-cards {
+    flex-direction: column;
+  }
+}
+
+/* Специфічні стилі для карти і калькулятора */
+@media (max-width: 767px) {
+  /* Налаштування калькулятора на повний екран */
+  .calculator-page-container .control-panel {
+    width: calc(100% - 40px);
+    left: 20px;
+    right: 20px;
+    top: 62px;
+    padding: 15px;
+    max-width: none;
+  }
+  
+  /* Зменшити висоту карти, щоб контроли не перекривали більшу частину екрану */
+  .calculator-page-container #map {
+    height: calc(100vh - 62px) !important;
+  }
+  
+  /* Інформаційні панелі для ракет */
+  .rocket-info-panel {
+    width: calc(100% - 40px);
+    left: 20px;
+    right: 20px;
+    max-width: none;
+  }
+  
+  /* Легенда на карті */
+  #legend-box {
+    bottom: 10px;
+    left: 10px;
+    max-width: calc(100% - 20px);
+    padding: 10px;
+  }
+  
+  /* Інформаційне вікно */
+  #info-box {
+    bottom: 10px;
+    right: 10px;
+    max-width: calc(100% - 20px);
+  }
+}
+
+/* Специфічні стилі для Wiki сторінки */
+@media (max-width: 767px) {
+  .wiki-page .container {
+    padding: 20px;
+    margin: 20px auto;
+  }
+  
+  .wiki-page h1 {
+    font-size: 1.8rem;
+  }
+  
+  .wiki-page p {
+    font-size: 1rem;
+  }
+  
+  .wiki-page .rocket-content {
+    flex-direction: column;
+  }
+  
+  .wiki-page .rocket-sidebar {
+    max-width: 100%;
+    order: 1;
+  }
+  
+  .wiki-page .rocket-main-info {
+    order: 2;
+  }
+  
+  /* Коригування для бокової панелі Wiki */
+  .wiki-content-right {
+    width: 100%;
+    margin-left: 0;
+    margin-top: 20px;
+  }
+  
+  /* Коригування розміру кнопки "Назад" */
+  #back-button {
+    top: 15px;
+    left: 15px;
+    padding: 8px 16px;
+    font-size: 14px;
+  }
+}
+
+/* Додаткові стилі для дуже малих екранів (телефони у портретній орієнтації) */
+@media (max-width: 480px) {
+  /* Зменшення розміру шрифтів */
+  .gradient-title {
+    font-size: 1.5rem;
+  }
+  
+  .step-card h2,
+  .contact-card h2,
+  .wiki-page .rocket-title {
+    font-size: 1.3rem;
+  }
+  
+  /* Зменшення відступів */
+  .step-card,
+  .contact-card {
+    padding: 1rem;
+  }
+  
+  /* Налаштування карти на дуже малих екранах */
+  .calculator-page-container .control-panel {
+    padding: 10px;
+  }
+  
+  /* Коригування розмірів полів форми */
+  select, button {
+    padding: 8px 12px;
+    font-size: 0.9rem;
+  }
+  
+  /* Виправлення стилів для специфікацій ракет */
+  .wiki-page .specs-row {
+    flex-direction: column;
+  }
+  
+  .wiki-page .specs-label,
+  .wiki-page .specs-value {
+    flex: 1 1 100%;
+  }
+  
+  /* Виправлення для інформаційних панелей */
+  .rocket-info-item {
+    flex-direction: column;
+  }
+  
+  .info-label,
+  .info-value {
+    width: 100%;
+  }
+}
+
+/* Спеціальні виправлення для орієнтації "landscape" на телефонах */
+@media (max-height: 500px) and (orientation: landscape) {
+  .calculator-page-container .control-panel {
+    max-height: 70vh;
+    overflow-y: auto;
+    top: 62px;
+  }
+  
+  .navbar {
+    padding: 0.5rem;
+  }
+}
