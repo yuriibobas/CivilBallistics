@@ -781,208 +781,331 @@ html, body {
 @media (max-width: 767px) {
   /* Базові стилі */
   body {
-    font-size: 16px;
+    font-size: 16px !important;
+    width: 100% !important;
+    overflow-x: hidden !important;
   }
   
-  /* Навігаційне меню */
+  /* Навігаційне меню - примусово змінити на вертикальне */
   .navbar {
-    flex-direction: column;
-    padding: 0.5rem;
+    flex-direction: column !important;
+    padding: 0.5rem !important;
   }
   
   .navbar a {
-    margin: 5px 0;
+    margin: 5px 0 !important;
   }
   
-  /* Головна сторінка */
+  /* Головна сторінка - примусово в колонку */
   .home {
-    flex-direction: column;
-    gap: 1rem;
+    flex-direction: column !important;
+    gap: 1rem !important;
+  }
+  
+  .home-image {
+    width: 100% !important;
   }
   
   .home-image img {
-    max-width: 100%;
-    height: auto;
+    max-width: 100% !important;
+    height: auto !important;
   }
   
-  /* Загальні стилі контенту */
+  /* Контент - примусово обмежити ширину */
   main {
-    padding: 1rem;
-    margin: 10px;
-    width: calc(100% - 20px);
-    box-sizing: border-box;
+    padding: 1rem !important;
+    margin: 10px auto !important;
+    width: calc(100% - 20px) !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
   }
   
-  /* Для всіх секцій з grid layout */
+  /* Всі елементи з grid layout */
   .steps {
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr !important;
+  }
+  
+  /* Всі зображення обмежити */
+  img {
+    max-width: 100% !important;
+    height: auto !important;
   }
   
   /* Інструкції */
   .instruction-page {
-    padding: 1rem;
+    padding: 1rem !important;
   }
   
   /* Калькулятор */
   .calculator-page {
-    padding: 1rem;
+    padding: 1rem !important;
   }
   
   .calculator-page .gradient-title {
-    font-size: 1.8rem;
+    font-size: 1.8rem !important;
   }
   
-  /* Для сторінки контактів */
+  /* Для карток, які зазвичай у рядок */
   .contact-cards {
-    flex-direction: column;
+    flex-direction: column !important;
+  }
+  
+  .contact-card {
+    width: 100% !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
   }
 }
 
 /* Специфічні стилі для карти і калькулятора */
 @media (max-width: 767px) {
-  /* Налаштування калькулятора на повний екран */
+  /* Контрольна панель калькулятора - значно менша і у верхньому кутку */
   .calculator-page-container .control-panel {
-    width: calc(100% - 40px);
-    left: 20px;
-    right: 20px;
-    top: 62px;
-    padding: 15px;
-    max-width: none;
+    width: 40% !important; /* Зменшено з calc(100% - 40px) */
+    left: 10px !important;
+    right: auto !important; /* Прибираємо right, щоб width працювало коректно */
+    top: 70px !important;
+    padding: 10px !important;
+    max-width: 180px !important; /* Обмежено максимальну ширину */
+    z-index: 1000 !important;
+    font-size: 12px !important; /* Менший розмір тексту */
+    background: rgba(255, 255, 255, 0.9) !important; /* Більша прозорість */
   }
   
-  /* Зменшити висоту карти, щоб контроли не перекривали більшу частину екрану */
+  /* Зменшити елементи управління в контрольній панелі */
+  .calculator-page-container .control-panel select,
+  .calculator-page-container .control-panel button {
+    font-size: 12px !important;
+    padding: 6px 8px !important;
+    margin-top: 5px !important;
+  }
+  
+  /* Зменшити посилання на ракету */
+  .rocket-link {
+    font-size: 12px !important;
+    padding: 6px !important;
+    margin-top: 8px !important;
+  }
+  
+  /* Карта */
   .calculator-page-container #map {
     height: calc(100vh - 62px) !important;
+    width: 100% !important;
   }
   
-  /* Інформаційні панелі для ракет */
+  /* Інформаційна панель для ракет - переміщена вниз і менша */
   .rocket-info-panel {
-    width: calc(100% - 40px);
-    left: 20px;
-    right: 20px;
-    max-width: none;
+    width: 60% !important;
+    max-width: 200px !important;
+    right: 10px !important;
+    left: auto !important; /* Вимикаємо left позиціонування */
+    bottom: 120px !important; /* Розміщуємо внизу, над легендою */
+    top: auto !important; /* Вимикаємо top позиціонування */
+    padding: 10px !important;
+    font-size: 11px !important;
+    line-height: 1.3 !important;
   }
   
-  /* Легенда на карті */
+  /* Менший заголовок в інфо-панелі */
+  .rocket-info-panel h3 {
+    font-size: 14px !important;
+    margin-top: 0 !important;
+    margin-bottom: 8px !important;
+    padding-bottom: 5px !important;
+  }
+  
+  /* Зменшити зображення ракети в інфо-панелі */
+  .rocket-info-image img {
+    max-height: 100px !important;
+  }
+  
+  /* Легенда на карті - зменшена і переміщена */
   #legend-box {
-    bottom: 10px;
-    left: 10px;
-    max-width: calc(100% - 20px);
-    padding: 10px;
+    bottom: 10px !important;
+    left: 10px !important;
+    max-width: 150px !important;
+    padding: 8px !important;
+    font-size: 11px !important;
   }
   
-  /* Інформаційне вікно */
+  /* Зменшити кружечки в легенді */
+  .legend-color {
+    width: 12px !important;
+    height: 12px !important;
+    margin-right: 5px !important;
+  }
+  
+  /* Інформаційне вікно - зменшено і переміщено у інше місце */
   #info-box {
-    bottom: 10px;
-    right: 10px;
-    max-width: calc(100% - 20px);
+    bottom: 10px !important;
+    right: 10px !important;
+    max-width: 160px !important;
+    padding: 8px !important;
+    font-size: 11px !important;
   }
 }
 
 /* Специфічні стилі для Wiki сторінки */
 @media (max-width: 767px) {
   .wiki-page .container {
-    padding: 20px;
-    margin: 20px auto;
+    padding: 20px !important;
+    margin: 20px auto !important;
+    width: calc(100% - 40px) !important;
+    box-sizing: border-box !important; /* Переконаємося, що padding включено у width */
+    max-width: 100% !important;
   }
   
   .wiki-page h1 {
-    font-size: 1.8rem;
+    font-size: 1.8rem !important;
   }
   
+  /* Переконаємося, що текст знаходиться строго в межах контейнера */
   .wiki-page p {
-    font-size: 1rem;
+    font-size: 1rem !important;
+    margin-left: 0 !important; 
+    margin-right: 0 !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    box-sizing: border-box !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    word-wrap: break-word !important; /* Для довгих слів */
+    overflow-wrap: break-word !important;
   }
   
+  /* Примусово в колонку */
   .wiki-page .rocket-content {
-    flex-direction: column;
+    flex-direction: column !important;
+    max-width: 100% !important;
+    padding: 0 !important;
   }
   
   .wiki-page .rocket-sidebar {
-    max-width: 100%;
-    order: 1;
+    max-width: 100% !important;
+    order: 1 !important;
+    margin: 0 !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
   }
   
   .wiki-page .rocket-main-info {
-    order: 2;
+    order: 2 !important;
+    width: 100% !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    box-sizing: border-box !important;
   }
   
-  /* Коригування для бокової панелі Wiki */
+  .wiki-content-wrapper {
+    flex-direction: column !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    padding: 0 !important;
+    box-sizing: border-box !important;
+  }
+  
+  .wiki-content-left, 
   .wiki-content-right {
-    width: 100%;
-    margin-left: 0;
-    margin-top: 20px;
+    width: 100% !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    box-sizing: border-box !important;
+  }
+  
+  /* Переконаємося, що всі елементи контенту обмежені контейнером */
+  .wiki-page .rocket-description,
+  .wiki-page .info-section,
+  .wiki-page .rockets-list,
+  .wiki-page .rocket-card,
+  .wiki-page .rocket-details {
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+    padding-left: 5px !important;
+    padding-right: 5px !important;
   }
   
   /* Коригування розміру кнопки "Назад" */
   #back-button {
-    top: 15px;
-    left: 15px;
-    padding: 8px 16px;
-    font-size: 14px;
+    top: 15px !important;
+    left: 15px !important;
+    padding: 8px 16px !important;
+    font-size: 14px !important;
+  }
+  
+  /* Налаштування таблиць специфікацій */
+  .wiki-page .specs-row {
+    display: flex !important;
+    flex-wrap: wrap !important;
   }
 }
 
 /* Додаткові стилі для дуже малих екранів (телефони у портретній орієнтації) */
 @media (max-width: 480px) {
-  /* Зменшення розміру шрифтів */
+  /* Зменшення розміру шрифтів для заголовків */
   .gradient-title {
-    font-size: 1.5rem;
+    font-size: 1.5rem !important;
   }
   
   .step-card h2,
   .contact-card h2,
   .wiki-page .rocket-title {
-    font-size: 1.3rem;
+    font-size: 1.3rem !important;
   }
   
-  /* Зменшення відступів */
+  /* Зменшення відступів для компактності */
   .step-card,
   .contact-card {
-    padding: 1rem;
+    padding: 1rem !important;
   }
   
   /* Налаштування карти на дуже малих екранах */
   .calculator-page-container .control-panel {
-    padding: 10px;
+    padding: 10px !important;
   }
   
-  /* Коригування розмірів полів форми */
-  select, button {
-    padding: 8px 12px;
-    font-size: 0.9rem;
+  /* Коригування елементів форми */
+  select, 
+  button {
+    padding: 8px 12px !important;
+    font-size: 0.9rem !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+    margin-right: 0 !important;
   }
   
-  /* Виправлення стилів для специфікацій ракет */
+  /* Виправлення для специфікацій ракет */
   .wiki-page .specs-row {
-    flex-direction: column;
+    flex-direction: column !important;
   }
   
   .wiki-page .specs-label,
   .wiki-page .specs-value {
-    flex: 1 1 100%;
+    flex: 1 1 100% !important;
+    width: 100% !important;
   }
   
-  /* Виправлення для інформаційних панелей */
+  /* Інформаційні панелі */
   .rocket-info-item {
-    flex-direction: column;
+    flex-direction: column !important;
   }
   
   .info-label,
   .info-value {
-    width: 100%;
+    width: 100% !important;
   }
 }
 
-/* Спеціальні виправлення для орієнтації "landscape" на телефонах */
+/* Режим landscape на телефонах */
 @media (max-height: 500px) and (orientation: landscape) {
   .calculator-page-container .control-panel {
-    max-height: 70vh;
-    overflow-y: auto;
-    top: 62px;
+    max-height: 70vh !important;
+    overflow-y: auto !important;
+    top: 62px !important;
   }
   
   .navbar {
-    padding: 0.5rem;
+    padding: 0.5rem !important;
   }
 }
